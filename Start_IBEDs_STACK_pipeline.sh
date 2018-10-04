@@ -1,6 +1,6 @@
 #!/bin/bash
 cd /home/biolinux/Documents/Arlet_files/scripts
-sleep 2
+sleep 5
 # show usage information
 if [ "${1}" == "--h" ] || [ "${1}" == "--help" ] || [ "${1}" == "-h" ] || [ "${1}" == "-help" ]
 	then
