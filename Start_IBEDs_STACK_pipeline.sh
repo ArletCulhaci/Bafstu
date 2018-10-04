@@ -8,7 +8,7 @@ if [ "${1}" == "--h" ] || [ "${1}" == "--help" ] || [ "${1}" == "-h" ] || [ "${1
 		echo "This pipeline analyzes RAD_seq data. it expects input files containing raw reads."
 		echo "The pipeline returns files with RAD-tags for each sample." 
 		echo "Start_IBEDs_STACK_pipeline.sh starts the highway bash script(IBEDs_STACK_pipeline.sh)." 
-		echo "the highway bash script runs other modules."
+		echo "The highway bash script runs other modules."
 		echo "" 
 		echo "Way of usage (stand-alone):" 
 		echo "bash Start_IBEDs_STACK_pipeline.sh" 
