@@ -24,7 +24,7 @@ echo "Files in your current working directory"
 echo " " 
 ls -h --color
 echo " " 
-sleep 5
+sleep 2
 
 #checking if all the needed files are present, if not the pipeline is aborted.
 missing=false
