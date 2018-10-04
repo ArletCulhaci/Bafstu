@@ -20,7 +20,7 @@ if [ "${1}" == "--h" ] || [ "${1}" == "--help" ] || [ "${1}" == "-h" ] || [ "${1
 		echo ""  
 	exit
 fi
-
+#process_radtags wordt aangeroepen
 if [ "$#" -eq 5 ]; then
     bash prep_IBEDs_pipeline.sh "${1}" "${2}" "${3}" "${4}" "${5}"
     python ustacks.py "${3}" "${5}" "Clean_$DATE-$N"  
