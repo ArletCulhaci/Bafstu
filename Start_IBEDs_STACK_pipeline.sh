@@ -29,7 +29,9 @@ sleep 2
 #checking if all the needed files are present, if not the pipeline is aborted.
 missing=false
 for pipelineFile in \
-	AHighway_IBEDs_pipeline.sh
+	Highway_IBEDs_pipeline.sh \
+	prep_IBEDs_pipeline.sh \
+	austacks.py
 	do
 	if ! [ -f "${pipelineFile}" ]
 		then
@@ -43,11 +45,11 @@ done
  		    then
                         sleep 2
 	                echo "The IBEDs STACK pipeline is aborted."
-	                echo " "
-	                read -p "Enter to exit" enter
-                        if [ "${enter}" == " " ]
+	                echo " "			
+	                read -p "Press enter to exit" enter
+                        if [ "${enter}" = "" ]
 		            then
-                                return 1 2> /dev/null || exit 1  
+                                exit 1  
                         fi
 	        fi
 # asking user input
