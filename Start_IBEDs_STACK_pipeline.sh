@@ -1,6 +1,6 @@
 #!/bin/bash
 cd /home/biolinux/Documents/Arlet_files/scripts
-sleep 2
+sleep 5
 # show usage information
 if [ "${1}" == "--h" ] || [ "${1}" == "--help" ] || [ "${1}" == "-h" ] || [ "${1}" == "-help" ]
 	then
@@ -8,7 +8,7 @@ if [ "${1}" == "--h" ] || [ "${1}" == "--help" ] || [ "${1}" == "-h" ] || [ "${1
 		echo "This pipeline analyzes RAD_seq data. it expects input files containing raw reads."
 		echo "The pipeline returns files with RAD-tags for each sample." 
 		echo "Start_IBEDs_STACK_pipeline.sh starts the highway bash script(IBEDs_STACK_pipeline.sh)." 
-		echo "the highway bash script runs other modules."
+		echo "The highway bash script runs other modules."
 		echo "" 
 		echo "Way of usage (stand-alone):" 
 		echo "bash Start_IBEDs_STACK_pipeline.sh" 
@@ -29,29 +29,29 @@ sleep 2
 #checking if all the needed files are present, if not the pipeline is aborted.
 missing=false
 for pipelineFile in \
-	Highway_IBEDs_pipeline.sh\
-        prep_IBEDs_pipeline.sh\
-        ustaks.py\
+	Highway_IBEDs_pipeline.sh \
+	prep_IBEDs_pipeline.sh \
+	austacks.py
 	do
-		if ! [ -f ${pipelineFile} ] then
-				echo "somethingwrong"
-                                sleep 10
-				echo ${pipelineFile}" does not exist." 
-				missing=true
-                                sleep 2
-		fi
+	if ! [ -f "${pipelineFile}" ]
+		then
+		        echo ${pipelineFile}" does not exist." 
+			missing=true
+                        sleep 2
+	fi
+done 
 
-                if ${missing} then
-                    sleep 10
-	            echo "The IBEDs STACK pipeline is aborted."
-	            echo " "
-	            #sleep 10
-	            read -p "Press enter to exit: " enter
-	            if [[ "${enter}" == " " ]] then
-                         echo "we made it"	
-                     fi 
-	done
-
+                if ${missing}
+ 		    then
+                        sleep 2
+	                echo "The IBEDs STACK pipeline is aborted."
+	                echo " "			
+	                read -p "Press enter to exit" enter
+                        if [ "${enter}" = "" ]
+		            then
+                                exit 1  
+                        fi
+	        fi
 # asking user input
 read -p "Please enter a prefix that will be used for all output files: " prefix
 echo " " 
