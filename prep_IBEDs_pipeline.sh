@@ -30,7 +30,7 @@ if [ "$#" -eq 5 ]; then
         N=$(($N+1))
     done
 
-    mkdir "Clean_$DATE-$N"	
+    mkdir "${5}/Clean_$DATE-$N"	
     process_radtags -1 "${5}"/"${1}" -2 "${5}"/"${2}" -o ./"Clean_$DATE-$N" -b "${5}"/"${3}" -e sbfI -r -t 140 -q -D  -s 20 -w 0.13 
     echo  process_radtags -1 "${5}"/"${1}" -2 "${5}"/"${2}" -o ./"Clean_$DATE-$N" -b "${5}"/"${3}" -e sbfI -r -t 140 -q -D  -s 20 -w 0.13 > ./"Clean_$DATE-$N"/Command_log.txt
 fi
@@ -43,7 +43,7 @@ if [ "$#" -eq 4 ]; then
         N=$(($N+1))
     done
 
-    mkdir "Clean_$DATE-$N"	
+    mkdir "${5}/Clean_$DATE-$N"	
     process_radtags -f "${4}"/"${1}" -o ./"Clean_$DATE-$N" -b "${4}"/"${2}" -e sbfI -r -t 140 -q -D  -s 20 -w 0.13 
     echo  process_radtags -f "${4}"/"${1}" -o ./"Clean_$DATE-$N" -b "${4}"/"${2}" -e sbfI -r -t 140 -q -D  -s 20 -w 0.13  > ./"Clean_$DATE-$N"/Command_log.txt
 fi

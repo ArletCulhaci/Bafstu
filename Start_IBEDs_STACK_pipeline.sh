@@ -1,5 +1,5 @@
 #!/bin/bash
-cd /home/biolinux/Documents/Arlet_files/scripts
+cd /home/biolinux/Documents/Arlet_files/git-repos/Bafstu
 sleep 5
 # show usage information
 if [ "${1}" == "--h" ] || [ "${1}" == "--help" ] || [ "${1}" == "-h" ] || [ "${1}" == "-help" ]
@@ -65,11 +65,13 @@ echo " "
 if [[ "${porsingle}" == "P" ]] || [[ "${porsingle}" == "p" ]]
 	then
 		read -p "Enter both input files: " inputFile1 inputFile2
+                pwd
 		bash Highway_IBEDs_pipeline.sh ${inputFile1} ${inputFile2} ${barcodeFile} ${prefix} ${a_path}
 fi
 if [[ "${porsingle}" == "S" ]] || [[ "${porsingle}" == "s" ]]
 	then 
 		read -p "Enter your input file: " inputfile1
+                pwd
 		bash Highway_IBEDs_pipeline.sh ${inputFile1} ${barcodeFile} ${prefix} ${a_path}
 fi
 sleep 50

@@ -21,9 +21,10 @@ def getSampleID(gsi_barcode, gsi_path):
 
 def executeCommand(ec_sampleIDs, ec_ab_path, ec_output_dir):
     for x in range(len(ec_sampleIDs)):
+	print(ec_ab_path + "/" + ec_output_dir + "/" + str(ec_sampleIDs[x]) + ".1.fq.gz")
         command1 = "ustacks -f " + ec_ab_path + "/" + ec_output_dir + "/"  + str(ec_sampleIDs[x]) + ".1.fq.gz " + " -o " + ec_ab_path + "/" + ec_output_dir + "/stacks_" + "Clean_$DATE-$N "  + "-i " +  str(x) + " -m 3 -M 4 -p 5"
-        print(command1)
-        #os.system(command1)
+        #print(command1)
+        os.system(command1)
 
 def main():
     fl_barcode = sys.argv[1]
