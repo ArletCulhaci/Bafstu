@@ -31,7 +31,7 @@ missing=false
 for pipelineFile in \
 	Highway_IBEDs_pipeline.sh \
 	prep_IBEDs_pipeline.sh \
-	austacks.py
+	ustacks.py
 	do
 	if ! [ -f "${pipelineFile}" ]
 		then

@@ -31,8 +31,8 @@ if [ "$#" -eq 5 ]; then
     done
 
     mkdir "Clean_$DATE-$N"	
-    process_radtags -1 "${5}"/"${1}" -2 "${5}"/"${2}" -o ./"Clean_$DATE-$N" -b "${5}"/"${3}" -e sbfI -r -q -D  -s 22 -w 0.055 
-    echo  process_radtags -1 "${5}"/"${1}" -2 "${5}"/"${2}" -o ./"Clean_$DATE-$N" -b "${5}"/"${3}" -e sbfI -r -q -D  -s 22 -w 0.055 > ./"Clean_$DATE-$N"/explain.txt
+    process_radtags -1 "${5}"/"${1}" -2 "${5}"/"${2}" -o ./"Clean_$DATE-$N" -b "${5}"/"${3}" -e sbfI -r -t 140 -q -D  -s 20 -w 0.13 
+    echo  process_radtags -1 "${5}"/"${1}" -2 "${5}"/"${2}" -o ./"Clean_$DATE-$N" -b "${5}"/"${3}" -e sbfI -r -t 140 -q -D  -s 20 -w 0.13 > ./"Clean_$DATE-$N"/Command_log.txt
 fi
 if [ "$#" -eq 4 ]; then
     DATE=$(date +"%d%m%Y")
@@ -44,8 +44,8 @@ if [ "$#" -eq 4 ]; then
     done
 
     mkdir "Clean_$DATE-$N"	
-    process_radtags -f "${4}"/"${1}" -o ./"Clean_$DATE-$N" -b "${4}"/"${2}" -e sbfI -r -q -D  -s 22 -w 0.055 
-    echo  process_radtags -f "${4}"/"${1}" -o ./"Clean_$DATE-$N" -b "${4}"/"${2}" -e sbfI -r -q -D  -s 22 -w 0.055  > ./"Clean_$DATE-$N"/explain.txt
+    process_radtags -f "${4}"/"${1}" -o ./"Clean_$DATE-$N" -b "${4}"/"${2}" -e sbfI -r -t 140 -q -D  -s 20 -w 0.13 
+    echo  process_radtags -f "${4}"/"${1}" -o ./"Clean_$DATE-$N" -b "${4}"/"${2}" -e sbfI -r -t 140 -q -D  -s 20 -w 0.13  > ./"Clean_$DATE-$N"/Command_log.txt
 fi
 
 
