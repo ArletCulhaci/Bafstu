@@ -19,21 +19,30 @@ def getSampleID(gsi_barcode, gsi_path):
         ls_sampleIDs.append(row[0][6:]) #gets remaining string after 6 indices, barcode(5 bp). 
     return ls_sampleIDs
 
-def executeCommand(ec_sampleIDs, ec_ab_path, ec_output_dir):
+def executeCommand(ec_sampleIDs, ec_ab_path, ec_output_dir, ec_porsingle):
     for x in range(len(ec_sampleIDs)):
-	print(ec_ab_path + "/" + ec_output_dir + "/" + str(ec_sampleIDs[x]) + ".1.fq.gz")
-        command1 = "ustacks -f " + ec_ab_path + "/" + ec_output_dir + "/"  + str(ec_sampleIDs[x]) + ".1.fq.gz " + " -o " + ec_ab_path + "/" + ec_output_dir + "/stacks_" + "Clean_$DATE-$N "  + "-i " +  str(x) + " -m 3 -M 4 -p 5"
+	if ec_porsingle == "paired":
+		#print(ec_ab_path + "/" + ec_output_dir + "/" + str(ec_sampleIDs[x]) + ".1.fq.gz")
+        	command1 = "ustacks -f " + ec_ab_path + "/" + ec_output_dir + "/"  + str(ec_sampleIDs[x]) + ".1.fq.gz " + " -o " + ec_ab_path + "/" + ec_output_dir + "/stacks_" + "Clean_$DATE-$N "  + "-i " +  str(x) + " -m 3 -M 4 -p 5"
+		#print(command1)
+		os.system(command1)
+	else:
+		#print(ec_ab_path + "/" + ec_output_dir + "/" + str(ec_sampleIDs[x]) + ".fq.gz")
+        	command1 = "ustacks -f " + ec_ab_path + "/" + ec_output_dir + "/"  + str(ec_sampleIDs[x]) + ".fq.gz " + " -o " + ec_ab_path + "/" + ec_output_dir + "/stacks_" + "Clean_$DATE-$N "  + "-i " +  str(x) + " -m 3 -M 4 -p 5"
+		#print(command1)
+		os.system(command1)
         #print(command1)
-        os.system(command1)
+        #os.system(command1)
 
 def main():
     fl_barcode = sys.argv[1]
     ab_path = sys.argv[2]
     output_dir = sys.argv[3]
+    porsingle = sys.argv[4]
+    print(porsingle)
     ls_sampleIDs = getSampleID(fl_barcode, ab_path)
-    executeCommand(ls_sampleIDs, ab_path, output_dir)
-    print(ab_path)
-    print(output_dir)
+    executeCommand(ls_sampleIDs, ab_path, output_dir, porsingle)
+    print(porsingle)
 
 main()
 

@@ -67,7 +67,8 @@ if [[ "${porsingle}" == "P" ]] || [[ "${porsingle}" == "p" ]]
 fi
 if [[ "${porsingle}" == "S" ]] || [[ "${porsingle}" == "s" ]]
 	then 
-		read -p "Enter your input file: " inputfile1
+                echo "nothing wrong with start"
+		read -p "Enter your input file: " inputFile1
 		bash Highway_IBEDs_pipeline.sh ${inputFile1} ${barcodeFile} ${a_path}
 fi
 sleep 5
