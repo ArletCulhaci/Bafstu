@@ -16,7 +16,7 @@ def getSampleID(gsi_barcode, gsi_path):
     f  = open(gsi_path + "/" +  gsi_barcode, "rb")
     reader = csv.reader(f)
     for row in reader:
-        ls_sampleIDs.append(row[0][6:])
+        ls_sampleIDs.append(row[0][6:]) #gets remaining string after 6 indices, barcode(5 bp). 
     return ls_sampleIDs
 
 def executeCommand(ec_sampleIDs, ec_ab_path, ec_output_dir):

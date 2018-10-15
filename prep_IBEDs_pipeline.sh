@@ -21,7 +21,7 @@ if [ "${1}" == "--h" ] || [ "${1}" == "--help" ] || [ "${1}" == "-h" ] || [ "${1
 	exit
 fi
 
-if [ "$#" -eq 5 ]; then 
+if [ "$#" -eq 4 ]; then 
     DATE=$(date +"%d%m%Y")
     N=1
 
@@ -30,11 +30,11 @@ if [ "$#" -eq 5 ]; then
         N=$(($N+1))
     done
 
-    mkdir "${5}/Clean_$DATE-$N"	
-    process_radtags -1 "${5}"/"${1}" -2 "${5}"/"${2}" -o ./"Clean_$DATE-$N" -b "${5}"/"${3}" -e sbfI -r -t 140 -q -D  -s 20 -w 0.13 
-    echo  process_radtags -1 "${5}"/"${1}" -2 "${5}"/"${2}" -o ./"Clean_$DATE-$N" -b "${5}"/"${3}" -e sbfI -r -t 140 -q -D  -s 20 -w 0.13 > ./"Clean_$DATE-$N"/Command_log.txt
+    mkdir "${4}/Clean_$DATE-$N"	
+    process_radtags -1 "${4}"/"${1}" -2 "${4}"/"${2}" -o ./"Clean_$DATE-$N" -b "${4}"/"${3}" -e sbfI -r -t 140 -q -D  -s 20 -w 0.13 
+    echo  process_radtags -1 "${4}"/"${1}" -2 "${4}"/"${2}" -o ./"Clean_$DATE-$N" -b "${4}"/"${3}" -e sbfI -r -t 140 -q -D  -s 20 -w 0.13 > ./"Clean_$DATE-$N"/Command_log.txt
 fi
-if [ "$#" -eq 4 ]; then
+if [ "$#" -eq 3 ]; then
     DATE=$(date +"%d%m%Y")
     N=1
 
@@ -43,9 +43,9 @@ if [ "$#" -eq 4 ]; then
         N=$(($N+1))
     done
 
-    mkdir "${5}/Clean_$DATE-$N"	
-    process_radtags -f "${4}"/"${1}" -o ./"Clean_$DATE-$N" -b "${4}"/"${2}" -e sbfI -r -t 140 -q -D  -s 20 -w 0.13 
-    echo  process_radtags -f "${4}"/"${1}" -o ./"Clean_$DATE-$N" -b "${4}"/"${2}" -e sbfI -r -t 140 -q -D  -s 20 -w 0.13  > ./"Clean_$DATE-$N"/Command_log.txt
+    mkdir "${3}/Clean_$DATE-$N"	
+    process_radtags -f "${3}"/"${1}" -o ./"Clean_$DATE-$N" -b "${3}"/"${2}" -e sbfI -r -t 140 -q -D  -s 20 -w 0.13 
+    echo  process_radtags -f "${3}"/"${1}" -o ./"Clean_$DATE-$N" -b "${3}"/"${2}" -e sbfI -r -t 140 -q -D  -s 20 -w 0.13  > ./"Clean_$DATE-$N"/Command_log.txt
 fi
 
 

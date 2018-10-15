@@ -1,13 +1,13 @@
 #!/bin/bash
 cd /home/biolinux/Documents/Arlet_files/git-repos/Bafstu
-sleep 5
+sleep 2
 # show usage information
 if [ "${1}" == "--h" ] || [ "${1}" == "--help" ] || [ "${1}" == "-h" ] || [ "${1}" == "-help" ]
 	then
 		echo " " 
-		echo "This pipeline analyzes RAD_seq data. it expects input files containing raw reads."
+		echo "This pipeline analyzes RAD_seq data. It expects input files containing raw reads."
 		echo "The pipeline returns files with RAD-tags for each sample." 
-		echo "Start_IBEDs_STACK_pipeline.sh starts the highway bash script(IBEDs_STACK_pipeline.sh)." 
+		echo "Start_IBEDs_STACK_pipeline.sh starts the highway bash script(Highway_IBEDs_STACK_pipeline.sh)." 
 		echo "The highway bash script runs other modules."
 		echo "" 
 		echo "Way of usage (stand-alone):" 
@@ -53,8 +53,6 @@ done
                         fi
 	        fi
 # asking user input
-read -p "Please enter a prefix that will be used for all output files: " prefix
-echo " " 
 read -p "Please enter P (paired-end) or S (single): " porsingle
 echo " " 
 read -p "Enter your barcode file: " barcodeFile
@@ -65,13 +63,11 @@ echo " "
 if [[ "${porsingle}" == "P" ]] || [[ "${porsingle}" == "p" ]]
 	then
 		read -p "Enter both input files: " inputFile1 inputFile2
-                pwd
-		bash Highway_IBEDs_pipeline.sh ${inputFile1} ${inputFile2} ${barcodeFile} ${prefix} ${a_path}
+		bash Highway_IBEDs_pipeline.sh ${inputFile1} ${inputFile2} ${barcodeFile} ${a_path}
 fi
 if [[ "${porsingle}" == "S" ]] || [[ "${porsingle}" == "s" ]]
 	then 
 		read -p "Enter your input file: " inputfile1
-                pwd
-		bash Highway_IBEDs_pipeline.sh ${inputFile1} ${barcodeFile} ${prefix} ${a_path}
+		bash Highway_IBEDs_pipeline.sh ${inputFile1} ${barcodeFile} ${a_path}
 fi
-sleep 50
+sleep 5
