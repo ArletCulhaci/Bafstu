@@ -32,7 +32,7 @@ if [ "$#" -eq 4 ]; then
     bash prep_IBEDs_pipeline.sh "${1}" "${2}" "${3}" "${4}" 
     pwd
     echo "Clean_" + "$DATE-$N"
-    python ustacks.py "${3}" "${5}" "Clean_$DATE-$N"  
+    python ustacks.py "${3}" "${4}" "Clean_$DATE-$N"  
 fi
 if [ "$#" -eq 3 ]; then
     bash prep_IBEDs_pipeline.sh "${1}" "${2}" "${3}" 
