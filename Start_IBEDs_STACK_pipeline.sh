@@ -1,6 +1,31 @@
 #!/bin/bash
 cd /home/biolinux/Documents/Arlet_files/git-repos/Bafstu
 sleep 2
+trap '
+while true; do
+
+    read -p "Do you really want to exit? All the created files will be deleted: " yn
+
+    case $yn in
+
+        [Yy]* )
+                echo "Deleting files"
+		sleep 5 
+                exit 1;;
+
+        [Nn]* )
+                echo "Continue.."
+		exit 255
+		break;;
+
+        * ) echo "Please answer yes or no.";;
+
+    esac
+
+done
+
+' SIGINT
+
 # show usage information
 if [ "${1}" == "--h" ] || [ "${1}" == "--help" ] || [ "${1}" == "-h" ] || [ "${1}" == "-help" ]
 	then
@@ -19,14 +44,25 @@ if [ "${1}" == "--h" ] || [ "${1}" == "--help" ] || [ "${1}" == "-h" ] || [ "${1
 	exit
 fi
 
+# set default parameters
+truncate_length=140
+window_width=0.13
+quality_threshold=20
+dist_stacks=2
+depth_stack=3
+dist_sec_reads=1
+ref_genome=false
+paired=true
+renzym=sbfI
+
 #Show all files in current working directory
 echo "Files in your current working directory" 
 echo " " 
-ls -h --color
+tree -c 
 echo " " 
 sleep 2
 
-#checking if all the needed files are present, if not the pipeline is aborted.
+#check if all the needed files are present, if not the pipeline is aborted.
 missing=false
 for pipelineFile in \
 	Highway_IBEDs_pipeline.sh \
@@ -40,35 +76,157 @@ for pipelineFile in \
                         sleep 2
 	fi
 done 
-
                 if ${missing}
  		    then
                         sleep 2
 	                echo "The IBEDs STACK pipeline is aborted."
 	                echo " "			
-	                read -p "Press enter to exit" enter
-                        if [ "${enter}" = "" ]
-		            then
-                                exit 1  
-                        fi
+	                while true; do
+				read -p "Press enter to exit " enter
+				case $enter in
+					("")exit 1;;
+					*) echo "Please press enter to exit";;
+				esac
+			done
 	        fi
+
 # asking user input
-read -p "Please enter P (paired-end) or S (single): " porsingle
+echo "Be aware to blast a few reads on the full NCBI database, in order to find any form of contamination in your dataset."
 echo " " 
+while true; do
+
+    read -p "Do you have a reference genome? " yn
+
+    case $yn in
+
+        [Yy]* )                 
+                ref_genome=true     
+                break;;
+
+        [Nn]* )                 
+                break;;
+
+        * ) echo "Please answer yes or no.";;
+
+    esac
+
+done
+while true; do
+
+    read -p "Do you have paired data? " yn
+
+    case $yn in
+
+        [Yy]* )
+                break;;
+
+        [Nn]* )
+		paired=false
+                break;;
+
+        * ) echo "Please answer yes or no.";;
+
+    esac
+
+done
+
 read -p "Enter your barcode file: " barcodeFile
 echo " "
 read -p "Enter the absolute path to the directory containing the input files: " a_path
 echo " "
 
-if [[ "${porsingle}" == "P" ]] || [[ "${porsingle}" == "p" ]]
+#if the user wants to change the default parameters, ask for new parameters.
+while true; do
+
+    read -p "Do you want to change the default parameters: " yn
+
+    case $yn in
+
+        [Yy]* ) 
+		read -p "Set your restriction enzyme: " renzym
+		echo ""                
+		read -p "Set truncate length: " truncate_length
+                echo " "
+                read -p "Set window width: " window_width
+		echo ""
+		read -p "Set Phred quality threshold: " quality_threshold
+		echo ""
+		read -p "Set the maximum allowed mismatches between similar stacks: " dist_stacks
+		echo ""
+		read -p "Set the minimum number of reads to form a stack (depth): " depth_stack
+		echo ""
+		read -p "Set the maximum allowed mismatches between the stack and secondary reads (N+1): " dist_sec_reads
+		echo ""
+		echo "Using custom parameters."
+		echo "Restriction enzyme is set to ${renzym}"
+                echo "Truncating reads to ${truncate_length} bp."
+                echo "Using a sliding window of ${window_width} bp to asses te quality of the reads. "
+                echo "The Phred quality threshold is set to ${quality_threshold}"
+                echo "The maximum allowed mismatches between stacks is ${dist_stacks}"
+                echo "The minimum number of reads to form staks (depth) is ${depth_stack}"
+                echo "The maximum allowed mismatches between stacks and secondary reads is N + ${dist_sec_reads}"
+
+	        break;;
+
+        [Nn]* )                 
+		echo "Using defaults parameters."
+		echo "Restriction enzyme is set to ${renzym}"
+                echo "Truncating reads to ${truncate_length} bp."
+                echo "Using a sliding window of ${window_width} bp to asses te quality of the reads. "
+                echo "The Phred quality threshold is set to ${quality_threshold}"
+                echo "The maximum allowed mismatches between stacks is ${dist_stacks}"
+                echo "The minimum number of reads to form staks (depth) is ${depth_stack}"
+		echo "The maximum allowed mismatches between stacks and secondary reads is N + ${dist_sec_reads}"
+		break;;
+
+        * ) echo "Please answer yes or no.";;
+
+    esac
+
+done
+if [[ "${ref_genome}" == "true" ]] && [[ "${paired}" == "true" ]]
 	then
-		read -p "Enter both input files: " inputFile1 inputFile2
-		bash Highway_IBEDs_pipeline.sh ${inputFile1} ${inputFile2} ${barcodeFile} ${a_path}
+	echo "Starting reference based analysis on paired-end data."
+	echo " "
+	read -p "Enter the .fasta or .fa file of yout reference genome: " ref_fasta
+	echo ""
+	read -p "Enter both input files: " inputFile1 inputFile2
 fi
-if [[ "${porsingle}" == "S" ]] || [[ "${porsingle}" == "s" ]]
+if [[ "${ref_genome}" == "true" ]] && [[ "${paired}" == "false" ]]
 	then 
-                echo "nothing wrong with start"
-		read -p "Enter your input file: " inputFile1
-		bash Highway_IBEDs_pipeline.sh ${inputFile1} ${barcodeFile} ${a_path}
+	echo "Starting reference based analysis on single-end data."
+	echo " "
+        read -p "Enter the .fasta or .fa file of yout reference genome: " ref_fasta
+        echo ""
+        read -p "Enter your input file: " inputFile
+
 fi
-sleep 5
+if [[ "${ref_genome}" == "false" ]] && [[ "${paired}" == "false" ]]
+	then
+	echo "Starting de novo based analysis on single-end data."
+	echo " "
+        read -p "Enter your input file: " inputFile
+	bash Highway_IBEDs_pipeline.sh ${inputFile} ${barcodeFile} ${a_path} ${renzym} ${truncate_length} ${quality_threshold} ${window_width} ${dist_stacks} ${depth_stack} ${dist_sec_reads} ${ref_genome}
+
+fi
+if [[ "${ref_genome}" == "false" ]] && [[ "${paired}" == "true" ]]
+        then
+        echo "Starting de novo based analysis on paired-end data."
+	echo ""
+	read -p "Enter both input files: " inputFile1 inputFile2
+	bash Highway_IBEDs_pipeline.sh ${inputFile1} ${inputFile2} ${barcodeFile} ${a_path} ${renzym} ${truncate_length} ${quality_threshold} ${window_width} ${dist_stacks} ${depth_stack} ${dist_sec_reads} ${ref_genome}
+
+fi
+
+#if [[ "${porsingle}" == "P" ]] || [[ "${porsingle}" == "p" ]]
+#	then
+#		read -p "Enter both input files: " inputFile1 inputFile2
+#		bash Highway_IBEDs_pipeline.sh ${inputFile1} ${inputFile2} ${barcodeFile} ${a_path}
+#fi
+#if [[ "${porsingle}" == "S" ]] || [[ "${porsingle}" == "s" ]]
+#	then 
+#		read -p "Enter your input file: " inputFile1
+#		bash Highway_IBEDs_pipeline.sh ${inputFile1} ${barcodeFile} ${a_path}
+#fi
+sleep 2
+trap SIGINT

@@ -28,16 +28,15 @@ fi
     while [[ -d "Clean_$DATE-$N" ]] ; do                                                  
         N=$(($N+1))                                                                       
     done   
-if [ "$#" -eq 4 ]; then
-    bash prep_IBEDs_pipeline.sh "${1}" "${2}" "${3}" "${4}" 
+if [ "$#" -eq 12 ]; then
+    bash prep_IBEDs_pipeline.sh "${1}" "${2}" "${3}" "${4}" ${5} ${6} ${7} ${8} ${9} ${10} ${11}
     pwd
     echo "Clean_" + "$DATE-$N"
-    python ustacks.py "${3}" "${4}" "Clean_$DATE-$N" "paired" 
+    #python ustacks.py "${3}" "${4}" "Clean_$DATE-$N" "paired" 
 fi
-if [ "$#" -eq 3 ]; then
-    echo 'inside' 
-    bash prep_IBEDs_pipeline.sh "${1}" "${2}" "${3}" 
-    python ustacks.py "${2}" "${3}" "Clean_$DATE-$N" "single"
+if [ "$#" -eq 11 ]; then
+    bash prep_IBEDs_pipeline.sh "${1}" "${2}" "${3}" ${4} ${5} ${6} ${7} ${8} ${9} ${10}
+    #python ustacks.py "${2}" "${3}" "Clean_$DATE-$N" "single"
 fi
 
-
+sleep 2

@@ -21,32 +21,32 @@ if [ "${1}" == "--h" ] || [ "${1}" == "--help" ] || [ "${1}" == "-h" ] || [ "${1
 	exit
 fi
 
-if [ "$#" -eq 4 ]; then 
+if [ "$#" -eq 11 ]; then 
     DATE=$(date +"%d%m%Y")
     N=1
 
     # Increment $N as long as a directory with that name exists
-    while [[ -d "Clean_$DATE-$N" ]] ; do
+    while [[ -d "${4}/Clean_$DATE-$N" ]] ; do
         N=$(($N+1))
     done
 
     mkdir "${4}/Clean_$DATE-$N"	
-    process_radtags -1 "${4}"/"${1}" -2 "${4}"/"${2}" -o ./"Clean_$DATE-$N" -b "${4}"/"${3}" -e sbfI -r -t 140 -q -D  -s 20 -w 0.13 
-    echo  process_radtags -1 "${4}"/"${1}" -2 "${4}"/"${2}" -o ./"Clean_$DATE-$N" -b "${4}"/"${3}" -e sbfI -r -t 140 -q -D  -s 20 -w 0.13 > ./"Clean_$DATE-$N"/Command_log.txt
+    process_radtags -1 "${4}"/"${1}" -2 "${4}"/"${2}" -o ${4}/"Clean_$DATE-$N" -b "${4}"/"${3}" -e ${5} -r -t ${6} -q -D -s ${7} -w ${8}
+    echo process_radtags -1 "${4}"/"${1}" -2 "${4}"/"${2}" -o ${4}/"Clean_$DATE-$N" -b "${4}"/"${3}" -e ${5} -r -t ${6} -q -D -s ${7} -w ${8} > ${4}/"Clean_$DATE-$N"/Command_log.txt
 fi
-if [ "$#" -eq 3 ]; then
+if [ "$#" -eq 10 ]; then
     DATE=$(date +"%d%m%Y")
     N=1
 
     # Increment $N as long as a directory with that name exists
-    while [[ -d "Clean_$DATE-$N" ]] ; do
+    while [[ -d "${3}/Clean_$DATE-$N" ]] ; do
         N=$(($N+1))
     done
 
     mkdir "${3}/Clean_$DATE-$N"	
-    process_radtags -f "${3}"/"${1}" -o ./"Clean_$DATE-$N" -b "${3}"/"${2}" -e sbfI -r -t 140 -q -D  -s 20 -w 0.13 
-    echo  process_radtags -f "${3}"/"${1}" -o ./"Clean_$DATE-$N" -b "${3}"/"${2}" -e sbfI -r -t 140 -q -D  -s 20 -w 0.13  > ./"Clean_$DATE-$N"/Command_log.txt
+    process_radtags -f "${3}"/"${1}" -o ${3}/"Clean_$DATE-$N" -b "${3}"/"${2}" -e ${4} -r -t ${5} -q -D  -s ${6} -w ${7}
+    echo  process_radtags -f "${3}"/"${1}" -o ${3}/"Clean_$DATE-$N" -b "${3}"/"${2}" -e ${4} -r -t ${5} -q -D  -s ${6} -w ${7}  > ${3}/"Clean_$DATE-$N"/Command_log.txt
 fi
 
 
-
+sleep 30
