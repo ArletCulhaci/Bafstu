@@ -25,18 +25,38 @@ fi
     N=1                                                                                   
                                                                                           
     # Increment $N as long as a directory with that name exists                           
-    while [[ -d "Clean_$DATE-$N" ]] ; do                                                  
+    while [[ -d "${3}/Clean_$DATE-$N" ]] ; do                                                  
         N=$(($N+1))                                                                       
-    done   
-if [ "$#" -eq 12 ]; then
+    done
+
+# IF 13 = true, paired data  
+if [ "$#" -eq 13 ]; then  
     bash prep_IBEDs_pipeline.sh "${1}" "${2}" "${3}" "${4}" ${5} ${6} ${7} ${8} ${9} ${10} ${11}
-    pwd
-    echo "Clean_" + "$DATE-$N"
     #python ustacks.py "${3}" "${4}" "Clean_$DATE-$N" "paired" 
 fi
-if [ "$#" -eq 11 ]; then
-    bash prep_IBEDs_pipeline.sh "${1}" "${2}" "${3}" ${4} ${5} ${6} ${7} ${8} ${9} ${10}
+#If 12=false, single end data
+if [ "$#" -eq 12 ]; then
+    bash prep_IBEDs_pipeline.sh ${1} ${2} ${3} ${4} ${5} ${6} ${7} ${8} ${9} ${10}
     #python ustacks.py "${2}" "${3}" "Clean_$DATE-$N" "single"
+    #while true;do echo -n .;sleep 1;done &
+#python ustacks.py ${2} ${3} "Clean_$DATE-$N" ${12} &>/dev/null &
+# or do something else here
+#kill $!; trap 'kill $!' SIGTERM
+#echo done
+    python ustacks.py ${2} ${3} "Clean_$DATE-$N" ${12} &>/dev/null & 
+    PID=$!
+    i=1
+    #sp="/-\|"
+    echo -n ' '
+    while [ -d /proc/$PID ]
+        do
+            #LS
+	    # printf "-"
+            printf "\b${sp:i++%${#sp}:1}"
+#\b${sp:i++%${#sp}:1}"
+        done
+    echo ">"
+    echo "ustacks is done"
 fi
 
-sleep 2
+sleep 12

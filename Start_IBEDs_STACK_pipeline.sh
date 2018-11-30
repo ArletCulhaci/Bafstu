@@ -129,7 +129,6 @@ while true; do
     esac
 
 done
-
 read -p "Enter your barcode file: " barcodeFile
 echo " "
 read -p "Enter the absolute path to the directory containing the input files: " a_path
@@ -206,7 +205,7 @@ if [[ "${ref_genome}" == "false" ]] && [[ "${paired}" == "false" ]]
 	echo "Starting de novo based analysis on single-end data."
 	echo " "
         read -p "Enter your input file: " inputFile
-	bash Highway_IBEDs_pipeline.sh ${inputFile} ${barcodeFile} ${a_path} ${renzym} ${truncate_length} ${quality_threshold} ${window_width} ${dist_stacks} ${depth_stack} ${dist_sec_reads} ${ref_genome}
+	bash Highway_IBEDs_pipeline.sh ${inputFile} ${barcodeFile} ${a_path} ${renzym} ${truncate_length} ${quality_threshold} ${window_width} ${dist_stacks} ${depth_stack} ${dist_sec_reads} ${ref_genome} ${paired}
 
 fi
 if [[ "${ref_genome}" == "false" ]] && [[ "${paired}" == "true" ]]
@@ -214,7 +213,7 @@ if [[ "${ref_genome}" == "false" ]] && [[ "${paired}" == "true" ]]
         echo "Starting de novo based analysis on paired-end data."
 	echo ""
 	read -p "Enter both input files: " inputFile1 inputFile2
-	bash Highway_IBEDs_pipeline.sh ${inputFile1} ${inputFile2} ${barcodeFile} ${a_path} ${renzym} ${truncate_length} ${quality_threshold} ${window_width} ${dist_stacks} ${depth_stack} ${dist_sec_reads} ${ref_genome}
+      	bash Highway_IBEDs_pipeline.sh ${inputFile1} ${inputFile2} ${barcodeFile} ${a_path} ${renzym} ${truncate_length} ${quality_threshold} ${window_width} ${dist_stacks} ${depth_stack} ${dist_sec_reads} ${ref_genome} ${paired}
 
 fi
 
@@ -228,5 +227,5 @@ fi
 #		read -p "Enter your input file: " inputFile1
 #		bash Highway_IBEDs_pipeline.sh ${inputFile1} ${barcodeFile} ${a_path}
 #fi
-sleep 2
+sleep 52
 trap SIGINT
