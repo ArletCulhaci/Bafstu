@@ -91,8 +91,7 @@ done
 	        fi
 
 # asking user input
-echo "Be aware to blast a few reads on the full NCBI database, in order to find any form of contamination in your dataset."
-echo " " 
+zenity  --info --title="Pipeline" --text="Be aware to blast a few reads on the full NCBI database, in order to find any form of contamination in your dataset." 
 while true; do
 
     read -p "Do you have a reference genome? " yn
@@ -129,11 +128,10 @@ while true; do
     esac
 
 done
-read -p "Enter your barcode file: " barcodeFile
-echo " "
-read -p "Enter the absolute path to the directory containing the input files: " a_path
-echo " "
-
+barcodeFile=$(zenity --file-selection --title="Choose a barcode file")
+#read -p "Enter the absolute path to the directory containing the input files: " a_path
+a_path=$(zenity  --file-selection --title="Choose a directory" --directory)
+#a_path=$((zenity  --file-selection --title="Choose a directory" --directory ))
 #if the user wants to change the default parameters, ask for new parameters.
 while true; do
 
@@ -189,6 +187,9 @@ if [[ "${ref_genome}" == "true" ]] && [[ "${paired}" == "true" ]]
 	echo " "
 	read -p "Enter the .fasta or .fa file of yout reference genome: " ref_fasta
 	echo ""
+        files=$(zenity --file-selection --multiple)
+        inputFile1=$(echo ${files} | cut -d"|" -f1)
+        inputFile2=$(echo ${files} | cut -d"|" -f2)
 	read -p "Enter both input files: " inputFile1 inputFile2
 fi
 if [[ "${ref_genome}" == "true" ]] && [[ "${paired}" == "false" ]]
@@ -197,14 +198,16 @@ if [[ "${ref_genome}" == "true" ]] && [[ "${paired}" == "false" ]]
 	echo " "
         read -p "Enter the .fasta or .fa file of yout reference genome: " ref_fasta
         echo ""
-        read -p "Enter your input file: " inputFile
+        inputFile=$(zenity --file-selection --title="Choose a barcode file")
+        #read -p "Enter your input file: " inputFile
 
 fi
 if [[ "${ref_genome}" == "false" ]] && [[ "${paired}" == "false" ]]
 	then
 	echo "Starting de novo based analysis on single-end data."
 	echo " "
-        read -p "Enter your input file: " inputFile
+        inputFile=$(zenity --file-selection --title="Choose your input file")
+        #read -p "Enter your input file: " inputFile
 	bash Highway_IBEDs_pipeline.sh ${inputFile} ${barcodeFile} ${a_path} ${renzym} ${truncate_length} ${quality_threshold} ${window_width} ${dist_stacks} ${depth_stack} ${dist_sec_reads} ${ref_genome} ${paired}
 
 fi
@@ -212,8 +215,11 @@ if [[ "${ref_genome}" == "false" ]] && [[ "${paired}" == "true" ]]
         then
         echo "Starting de novo based analysis on paired-end data."
 	echo ""
-	read -p "Enter both input files: " inputFile1 inputFile2
-      	bash Highway_IBEDs_pipeline.sh ${inputFile1} ${inputFile2} ${barcodeFile} ${a_path} ${renzym} ${truncate_length} ${quality_threshold} ${window_width} ${dist_stacks} ${depth_stack} ${dist_sec_reads} ${ref_genome} ${paired}
+        files=$(zenity --file-selection --multiple)
+        inputFile1=$(echo ${files} | cut -d"|" -f1)
+        inputFile2=$(echo ${files} | cut -d"|" -f2)
+	#read -p "Enter both input files: " inputFile1 inputFile2
+      	echo "bash Highway_IBEDs_pipeline.sh ${inputFile1} ${inputFile2} ${barcodeFile} ${a_path} ${renzym} ${truncate_length} ${quality_threshold} ${window_width} ${dist_stacks} ${depth_stack} ${dist_sec_reads} ${ref_genome} ${paired}"
 
 fi
 
@@ -227,5 +233,5 @@ fi
 #		read -p "Enter your input file: " inputFile1
 #		bash Highway_IBEDs_pipeline.sh ${inputFile1} ${barcodeFile} ${a_path}
 #fi
-sleep 52
+sleep 20
 trap SIGINT
