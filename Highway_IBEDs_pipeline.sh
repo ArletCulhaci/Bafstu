@@ -43,10 +43,12 @@ if [ "$#" -eq 12 ]; then
 # or do something else here
 #kill $!; trap 'kill $!' SIGTERM
 #echo done
-    python ustacks.py ${2} ${3} "Clean_$DATE-$N" ${12} &>/dev/null & 
+    Rscript test_r.R "Values_run_total_reads_bf_process.txt" ${3}/"Clean_$DATE-$N" --save --quiet 2>&1 >/dev/null
+    echo "A plot containing the initial number of reads before process_radtags can be found in the following directoty ${3}/"Clean_$DATE-$N"" 
+    python ustacks.py ${2} ${3} "Clean_$DATE-$N" ${12} ${8} ${9} &
     PID=$!
     i=1
-    #sp="/-\|"
+    sp="/-\|"
     echo -n ' '
     while [ -d /proc/$PID ]
         do
@@ -55,8 +57,10 @@ if [ "$#" -eq 12 ]; then
             printf "\b${sp:i++%${#sp}:1}"
 #\b${sp:i++%${#sp}:1}"
         done
-    echo ">"
     echo "ustacks is done"
+    bash counter.sh "${3}/Clean_$DATE-$N"
+    Rscript ustacls_r.R "Final_ustack_Values.txt" ${3}/"Clean_$DATE-$N"
+    cstacks -o ${3}/"Clean_$DATE-$N" -s ${3}/"Clean_$DATE-$N"/614_fem_6-11-15 -s ${3}/"Clean_$DATE-$N"/614_male_6-11-15  -n ${8} -p 5 2> cstacks.log
 fi
 
 sleep 12
