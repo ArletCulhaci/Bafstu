@@ -45,7 +45,7 @@ if [ "$#" -eq 12 ]; then
 #echo done
     Rscript test_r.R "Values_run_total_reads_bf_process.txt" ${3}/"Clean_$DATE-$N" --save --quiet 2>&1 >/dev/null
     echo "A plot containing the initial number of reads before process_radtags can be found in the following directoty ${3}/"Clean_$DATE-$N"" 
-    python ustacks.py ${2} ${3} "Clean_$DATE-$N" ${12} ${8} ${9} &
+    python ustacks.py ${2} ${3} "Clean_$DATE-$N" ${12} ${8} ${9}  &>/dev/null &
     PID=$!
     i=1
     sp="/-\|"
@@ -58,9 +58,79 @@ if [ "$#" -eq 12 ]; then
 #\b${sp:i++%${#sp}:1}"
         done
     echo "ustacks is done"
-    bash counter.sh "${3}/Clean_$DATE-$N"
-    Rscript ustacls_r.R "Final_ustack_Values.txt" ${3}/"Clean_$DATE-$N"
-    cstacks -o ${3}/"Clean_$DATE-$N" -s ${3}/"Clean_$DATE-$N"/614_fem_6-11-15 -s ${3}/"Clean_$DATE-$N"/614_male_6-11-15  -n ${8} -p 5 2> cstacks.log
+    bash counter.sh "${3}/Clean_$DATE-$N" ${2}  
+    Rscript ustacls_r.R "Final_ustack_Values.txt" ${3}/"Clean_$DATE-$N" --quiet 2>&1 >/dev/null
+    cstacks -o ${3}/"Clean_$DATE-$N" -s ${3}/"Clean_$DATE-$N"/614_fem_6-11-15 -s ${3}/"Clean_$DATE-$N"/614_male_6-11-15  -n ${8} -p 5 2> cstacks.log &
+        PID=$!
+    i=1
+    sp="/-\|"
+    echo -n ' '
+    while [ -d /proc/$PID ]
+        do
+            #LS
+            # printf "-"
+            printf "\b${sp:i++%${#sp}:1}"
+#\b${sp:i++%${#sp}:1}"
+        done
+    echo "cstacks is done"
+    python sstacks_31_okt.py ${2} ${3} "Clean_$DATE-$N" &>/dev/null &
+    PID=$!
+    i=1
+    sp="/-\|"
+    echo -n ' '
+    while [ -d /proc/$PID ]
+        do
+            #LS
+            # printf "-"
+            printf "\b${sp:i++%${#sp}:1}"
+#\b${sp:i++%${#sp}:1}"
+        done
+    echo "sstacks is done"
+    bash sstacks_counter.sh "${3}/Clean_$DATE-$N" ${2}
+    Rscript sstacks_r.R "Final_sstack_Values.txt" ${3}/"Clean_$DATE-$N" --quiet 2>&1 >/dev/null
+    python tsv2bam.py ${2} ${3} "Clean_$DATE-$N" &>/dev/null &
+    PID=$!
+    i=1
+    sp="/-\|"
+    echo -n ' '
+    while [ -d /proc/$PID ]
+        do
+            #LS
+            # printf "-"
+            printf "\b${sp:i++%${#sp}:1}"
+#\b${sp:i++%${#sp}:1}"
+        done
+    echo "tsv2bam is done"
+    gstacks -P  "${3}/Clean_$DATE-$N" -M ${3}/Popmap_4_dec.txt -t 5 &>/dev/null &
+        PID=$!
+    i=1
+    sp="/-\|"
+    echo -n ' '
+    while [ -d /proc/$PID ]
+        do
+            #LS
+            # printf "-"
+            printf "\b${sp:i++%${#sp}:1}"
+#\b${sp:i++%${#sp}:1}"
+        done
+    echo "gstacks is done"
+    populations -P "${3}/Clean_$DATE-$N" --popmap ${3}/Popmap_4_dec.txt --genepop --vcf -t 5 &>/dev/null &
+           PID=$!
+    i=1
+    sp="/-\|"
+    echo -n ' '
+    while [ -d /proc/$PID ]
+        do
+            #LS
+            # printf "-"
+            printf "\b${sp:i++%${#sp}:1}"
+#\b${sp:i++%${#sp}:1}"
+        done
+    echo "Populations is done"
+ 
+
+ 
+
 fi
 
-sleep 12
+sleep 8
