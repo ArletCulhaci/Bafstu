@@ -23,7 +23,7 @@ do
     tr "\n" ";" <  total > counts.txt
     sed 's/614_/\n614_/g'< counts.txt > counts2.txt
     sed 's/210_/\n210_/g'< counts2.txt > Final_ustack_Values.txt
-done < /media/biolinux/Data/Astrid_RADseq_data/barcodes.csv
+done < ${2}
 sed -i '1 i\Sample;Total Reads;Initial nr stacks;Nr primary reads;Percentage primary reads;Perecentage secondary reads;Inital nr blacklisted stacks;Final nr blacklisted stacks;Final nr loci;Mean coverage;stdev;Max;Nr reads in stacks' Final_ustack_Values.txt
 sed -i '2d' Final_ustack_Values.txt
 rm counts.txt
