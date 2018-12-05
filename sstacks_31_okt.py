@@ -2,7 +2,7 @@
 name: Arlet Culhaci
 Date: 01-nov-2018
 Function: invoke sstacks module
-Version 1:
+Version 1: steffi
 """
 import os
 import sys
@@ -23,7 +23,6 @@ def executeCommand(ec_sampleIDs, ec_ab_path, ec_output_dir):
         #print(command1)
         os.system(command1)
 
-
 def main():
     print(sys.argv)
     fl_barcode = sys.argv[1]
@@ -34,6 +33,4 @@ def main():
     print(output_dir)
     ls_sampleIDs = getSampleID(fl_barcode, ab_path)
     executeCommand(ls_sampleIDs, ab_path, output_dir)
-
 main()
-
