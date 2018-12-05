@@ -24,13 +24,9 @@ def executeCommand(ec_sampleIDs, ec_ab_path, ec_output_dir):
         os.system(command1)
 
 def main():
-    print(sys.argv)
     fl_barcode = sys.argv[1]
-    print(fl_barcode)
     ab_path = sys.argv[2]
-    print(ab_path)
     output_dir = sys.argv[3]
-    print(output_dir)
     ls_sampleIDs = getSampleID(fl_barcode, ab_path)
     executeCommand(ls_sampleIDs, ab_path, output_dir)
 main()

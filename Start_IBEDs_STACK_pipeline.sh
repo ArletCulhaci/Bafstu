@@ -67,7 +67,14 @@ missing=false
 for pipelineFile in \
 	Highway_IBEDs_pipeline.sh \
 	prep_IBEDs_pipeline.sh \
-	ustacks.py
+        initial_reads_IBEDs_pipeline.R\
+	ustacks_IBEDs_pipeline.py\
+        count_ustacks_values_IBEDs_pipeline.sh\
+        ustacks_values_IBEDs_pipeline.R\
+        sstacks_IBEDs_pipeline.py\
+        count_sstacks_values_IBEDs_pipeline.sh\
+        sstacks_values_IBEDs_pipeline.R\
+        tsv2bam_IBEDs_pipeline.py
 	do
 	if ! [ -f "${pipelineFile}" ]
 		then

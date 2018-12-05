@@ -29,22 +29,13 @@ def executeCommand(ec_sampleIDs, ec_ab_path, ec_output_dir, ec_porsingle, ec_dis
 	else:
 		#print(ec_ab_path + "/" + ec_output_dir + "/" + str(ec_sampleIDs[x]) + ".fq.gz")
         	command1 = "ustacks -f " + ec_ab_path + "/"  + ec_output_dir + "/"  + str(ec_sampleIDs[x]) + ".fq " + " -o " + ec_ab_path + "/" + ec_output_dir  + " -i " +  str(x) + " -m " + str(ec_depth_stack) + " -M " + str(ec_dist_stacks) + " -H -p 5 2>" + ec_ab_path + "/" + ec_output_dir + "/ustacks_" + str(ec_sampleIDs[x]) + ".log"
-
-		#print(command1)
 		os.system(command1)
-        #print(command1)
-        #os.system(command1)
 
 def main():
-    print(sys.argv)
     fl_barcode = sys.argv[1]
-    print(fl_barcode)
     ab_path = sys.argv[2]
-    print(ab_path)
     output_dir = sys.argv[3]
-    print(output_dir)
     porsingle = sys.argv[4]
-    print(porsingle)
     dist_stacks = sys.argv[5]
     depth_stack = sys.argv[6]
     ls_sampleIDs = getSampleID(fl_barcode, ab_path)
