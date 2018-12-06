@@ -63,7 +63,7 @@ if [ "$#" -eq 10 ]; then
         done
     echo "Process_RADtags is done"
     echo  process_radtags -f "${1}" -o ${3}/"Clean_$DATE-$N" -b "${2}" -e ${4} -r -t ${5} -q -D  -s ${6} -w ${7}  > ${3}/"Clean_$DATE-$N"/Command_log.txt
-    cat ${3}/process_radtags* | tail -n +12 | awk '{print $2, $3, $6}' | head -${num_ind} | tr ' ' ';' > ${3}/"Clean_$DATE-$N"/Values_run_total_reads_bf_process.txt
+    cat ${3}/"Clean_$DATE-$N"/process_radtags* | tail -n +12 | awk '{print $2, $3, $6}' | head -${num_ind} | tr ' ' ';' > ${3}/"Clean_$DATE-$N"/Values_run_total_reads_bf_process.txt
     #Rscript test_r.R Values_run_total_reads_bf_process.txt ${3}/"Clean_$DATE-$N" --save --quiet 2>&1 >/dev/null
    # echo "A plot containing the initial number of reads before process_radtags can be found in the following directoty ${3}/"Clean_$DATE-$N"" 
 fi
