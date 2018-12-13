@@ -53,7 +53,7 @@ depth_stack=3
 dist_sec_reads=1
 ref_genome=false
 paired=true
-renzym=sbfI
+renzym=szzz
 
 #Show all files in current working directory
 echo "Files in your current working directory" 
@@ -61,7 +61,37 @@ echo " "
 tree -c 
 echo " " 
 sleep 2
-
+a=$(python3 input_scherm.py)
+analysis=$(echo $a | awk '{print $1}' )
+data=$(echo $a | awk '{print $2}')
+echo $a
+#echo $analysis
+#echo $data
+if [[ "${analysis}" == "novo" ]] && [[ "${data}" == "single" ]]
+    then
+        echo "inside"
+        quality_threshold=$(echo $a |  tr " " "\n" | egrep '\-s' | awk '{print substr($0,3,length)}' )
+        truncate_length=$(echo $a | tr " " "\n" |  egrep '\-t' | awk '{print substr($0,3,length)}')
+        window_width=$(echo $a | tr " " "\n" | egrep '\-w' | awk '{print substr($0,3,length)}')
+        depth_stack=$(echo $a | tr " " "\n" | egrep '\-d' | awk '{print substr($0,3,length)}')
+        dist_stacks=$(echo $a | tr " " "\n" | egrep '\-m' | awk '{print substr($0,3,length)}')
+        dist_sec_reads=$(echo $a | tr " " "\n" | egrep '\-n' | awk '{print substr($0,3,length)}')
+        inputFile=$(echo $a | tr " " "\n" | egrep "fq")
+        a_path=$(echo $a | tr " " "\n" | egrep '\-f' | awk '{print substr($0,3,length)}')
+        barcodeFile=$(echo $a | tr " " "\n" | egrep "csv")
+        popmap=$(echo $a | tr " " "\n" | egrep "txt")
+        renzym=$(echo $a | tr " " "\n" | egrep '\-r' | awk '{print substr($0,3,length)}')
+        #echo ${quality_threshold}
+	#truncate_length=$(echo $a | awk '{print $7}')
+	#quality_threshold=$(echo $a | awk '{print $8}')
+        #window_width=$(echo $a | awk '{print $9}')
+        #depth_stack=$(echo $a | awk '{print $10}')
+        #dist_stacks=$(echo $a | awk '{print $11}')
+        #dist_sec_reads=$(echo $a | awk '{print $12}')
+        paired=false
+fi
+#echo $truncate_length
+echo "test"
 #check if all the needed files are present, if not the pipeline is aborted.
 missing=false
 for pipelineFile in \
@@ -99,95 +129,95 @@ done
 
 # asking user input
 zenity  --info --title="Pipeline" --text="Be aware to blast a few reads on the full NCBI database, in order to find any form of contamination in your dataset." 
-while true; do
+#while true; do
 
-    read -p "Do you have a reference genome? " yn
+ #   read -p "Do you have a reference genome? " yn
 
-    case $yn in
+  #  case $yn in
 
-        [Yy]* )                 
-                ref_genome=true     
-                break;;
+   #     [Yy]* )                 
+    #            ref_genome=true     
+     #           break;;
 
-        [Nn]* )                 
-                break;;
+      #  [Nn]* )                 
+       #         break;;
 
-        * ) echo "Please answer yes or no.";;
+        #* ) echo "Please answer yes or no.";;
 
-    esac
+   # esac
 
-done
-while true; do
+#done
+#while true; do
 
-    read -p "Do you have paired data? " yn
+ #   read -p "Do you have paired data? " yn
 
-    case $yn in
+  #  case $yn in
 
-        [Yy]* )
-                break;;
+   #     [Yy]* )
+    #            break;;
 
-        [Nn]* )
-		paired=false
-                break;;
+     #   [Nn]* )
+#		paired=false
+ #               break;;
 
-        * ) echo "Please answer yes or no.";;
+  #      * ) echo "Please answer yes or no.";;
 
-    esac
+   # esac
 
-done
-barcodeFile=$(zenity --file-selection --title="Choose a barcode file")
+#done
+#barcodeFile=$(zenity --file-selection --title="Choose a barcode file")
 #read -p "Enter the absolute path to the directory containing the input files: " a_path
-a_path=$(zenity  --file-selection --title="Choose a directory" --directory)
+#a_path=$(zenity  --file-selection --title="Choose a directory" --directory)
 #a_path=$((zenity  --file-selection --title="Choose a directory" --directory ))
 #if the user wants to change the default parameters, ask for new parameters.
-while true; do
+#while true; do
 
-    read -p "Do you want to change the default parameters: " yn
+ #   read -p "Do you want to change the default parameters: " yn
 
-    case $yn in
+  #  case $yn in
 
-        [Yy]* ) 
-		read -p "Set your restriction enzyme: " renzym
-		echo ""                
-		read -p "Set truncate length: " truncate_length
-                echo " "
-                read -p "Set window width: " window_width
-		echo ""
-		read -p "Set Phred quality threshold: " quality_threshold
-		echo ""
-		read -p "Set the maximum allowed mismatches between similar stacks: " dist_stacks
-		echo ""
-		read -p "Set the minimum number of reads to form a stack (depth): " depth_stack
-		echo ""
-		read -p "Set the maximum allowed mismatches between the stack and secondary reads (N+1): " dist_sec_reads
-		echo ""
-		echo "Using custom parameters."
-		echo "Restriction enzyme is set to ${renzym}"
-                echo "Truncating reads to ${truncate_length} bp."
-                echo "Using a sliding window of ${window_width} bp to asses te quality of the reads. "
-                echo "The Phred quality threshold is set to ${quality_threshold}"
-                echo "The maximum allowed mismatches between stacks is ${dist_stacks}"
-                echo "The minimum number of reads to form staks (depth) is ${depth_stack}"
-                echo "The maximum allowed mismatches between stacks and secondary reads is N + ${dist_sec_reads}"
+       # [Yy]* ) 
+	#	read -p "Set your restriction enzyme: " renzym
+	#	echo ""                
+	#	read -p "Set truncate length: " truncate_length
+         #       echo " "
+          #      read -p "Set window width: " window_width
+	#	echo ""
+	#	read -p "Set Phred quality threshold: " quality_threshold
+	#	echo ""
+	#	read -p "Set the maximum allowed mismatches between similar stacks: " dist_stacks
+	#	echo ""
+	#	read -p "Set the minimum number of reads to form a stack (depth): " depth_stack
+	#	echo ""
+	#	read -p "Set the maximum allowed mismatches between the stack and secondary reads (N+1): " dist_sec_reads
+	#	echo ""
+	#	echo "Using custom parameters."
+	#	echo "Restriction enzyme is set to ${renzym}"
+        #        echo "Truncating reads to ${truncate_length} bp."
+         #       echo "Using a sliding window of ${window_width} bp to asses te quality of the reads. "
+          #      echo "The Phred quality threshold is set to ${quality_threshold}"
+          #      echo "The maximum allowed mismatches between stacks is ${dist_stacks}"
+           #     echo "The minimum number of reads to form staks (depth) is ${depth_stack}"
+            #    echo "The maximum allowed mismatches between stacks and secondary reads is N + ${dist_sec_reads}"
 
-	        break;;
+#	        break;;
 
-        [Nn]* )                 
-		echo "Using defaults parameters."
-		echo "Restriction enzyme is set to ${renzym}"
-                echo "Truncating reads to ${truncate_length} bp."
-                echo "Using a sliding window of ${window_width} bp to asses te quality of the reads. "
-                echo "The Phred quality threshold is set to ${quality_threshold}"
-                echo "The maximum allowed mismatches between stacks is ${dist_stacks}"
-                echo "The minimum number of reads to form staks (depth) is ${depth_stack}"
-		echo "The maximum allowed mismatches between stacks and secondary reads is N + ${dist_sec_reads}"
-		break;;
+ #       [Nn]* )                 
+#		echo "Using defaults parameters."
+#		echo "Restriction enzyme is set to ${renzym}"
+ #               echo "Truncating reads to ${truncate_length} bp."
+  #              echo "Using a sliding window of ${window_width} bp to asses te quality of the reads. "
+   #             echo "The Phred quality threshold is set to ${quality_threshold}"
+    #            echo "The maximum allowed mismatches between stacks is ${dist_stacks}"
+     #           echo "The minimum number of reads to form staks (depth) is ${depth_stack}"
+#		echo "The maximum allowed mismatches between stacks and secondary reads is N + ${dist_sec_reads}"
+#		break;;
 
-        * ) echo "Please answer yes or no.";;
+ #       * ) echo "Please answer yes or no.";;
 
-    esac
+  #  esac
 
-done
+#done
 if [[ "${ref_genome}" == "true" ]] && [[ "${paired}" == "true" ]]
 	then
 	echo "Starting reference based analysis on paired-end data."
@@ -213,7 +243,7 @@ if [[ "${ref_genome}" == "false" ]] && [[ "${paired}" == "false" ]]
 	then
 	echo "Starting de novo based analysis on single-end data."
 	echo " "
-        inputFile=$(zenity --file-selection --title="Choose your input file")
+        #inputFile=$(zenity --file-selection --title="Choose your input file")
         #read -p "Enter your input file: " inputFile
 	bash Highway_IBEDs_pipeline.sh ${inputFile} ${barcodeFile} ${a_path} ${renzym} ${truncate_length} ${quality_threshold} ${window_width} ${dist_stacks} ${depth_stack} ${dist_sec_reads} ${ref_genome} ${paired}
 
@@ -240,5 +270,5 @@ fi
 #		read -p "Enter your input file: " inputFile1
 #		bash Highway_IBEDs_pipeline.sh ${inputFile1} ${barcodeFile} ${a_path}
 #fi
-sleep 20
+sleep 10
 trap SIGINT
