@@ -62,12 +62,12 @@ tree -c
 echo " " 
 sleep 2
 a=$(python3 input_scherm.py)
-analysis=$(echo $a | awk '{print $1}' )
-data=$(echo $a | awk '{print $2}')
+analysis=$(echo $a | egrep -c "novo" )
+data=$(echo $a | egrep -c 'single')
 echo $a
 #echo $analysis
 #echo $data
-if [[ "${analysis}" == "novo" ]] && [[ "${data}" == "single" ]]
+if [[ "${analysis}" == "1" ]] && [[ "${data}" == "1" ]]
     then
         echo "inside"
         quality_threshold=$(echo $a |  tr " " "\n" | egrep '\-s' | awk '{print substr($0,3,length)}' )
