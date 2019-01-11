@@ -20,22 +20,38 @@ if [ "${1}" == "--h" ] || [ "${1}" == "--help" ] || [ "${1}" == "-h" ] || [ "${1
 		echo ""  
 	exit
 fi
-#process_radtags wordt aangeroepen
-    DATE=$(date +"%d%m%Y")                                                                
-    N=1                                                                                   
-                                                                                          
-    # Increment $N as long as a directory with that name exists                           
-    while [[ -d "${3}/Clean_$DATE-$N" ]] ; do                                                  
-        N=$(($N+1))                                                                       
-    done
-
 # IF 13 = true, paired data  
-if [ "$#" -eq 13 ]; then  
+if [ "$#" -eq 13 ]; then
+    DATE=$(date +"%d%m%Y")
+    N=1
+
+    # Increment $N as long as a directory with that name exists                           
+    while [[ -d "${4}/Clean_$DATE-$N" ]] ; do
+        N=$(($N+1))
+    done  
     bash prep_IBEDs_pipeline.sh "${1}" "${2}" "${3}" "${4}" ${5} ${6} ${7} ${8} ${9} ${10} ${11}
+    Rscript initial_reads_IBEDs_pipeline.R "Values_run_total_reads_bf_process.txt" ${4}/"Clean_$DATE-$N" --quiet 2>&1 >/dev/null
+    echo "A plot containing the initial number of reads before process_radtags can be found in the following directoty ${4}/"Clean_$DATE-$N""
+    python ustacks_IBEDs_pipeline.py ${3} ${4} "Clean_$DATE-$N" ${13} ${9} ${10} 
     #python ustacks.py "${3}" "${4}" "Clean_$DATE-$N" "paired" 
+    bash count_ustacks_values_IBEDs_pipeline.sh "${4}/Clean_$DATE-$N" ${3}
+    Rscript ustacks_values_IBEDs_pipeline.R "Final_ustack_Values.txt" ${4}/"Clean_$DATE-$N" --quiet 2>&1 >/dev/null
+    cstacks -o ${4}/"Clean_$DATE-$N" -s ${4}/"Clean_$DATE-$N"/614_fem_6-11-15.1 -s ${4}/"Clean_$DATE-$N"/614_male_6-11-15.1  -n ${9} -p 15 2>  ${4}/"Clean_$DATE-$N"/cstacks.log
+    python sstacks_IBEDs_pipeline.py ${3} ${4} "Clean_$DATE-$N" ${13}  
+    bash count_sstacks_values_IBEDs_pipeline.sh "${4}/Clean_$DATE-$N" ${3}
+    Rscript sstacks_values_IBEDs_pipeline.R "Final_sstack_Values.txt" ${4}/"Clean_$DATE-$N" --quiet 2>&1 >/dev/null
+    python tsv2bam_IBEDs_pipeline.py ${3} ${4} "Clean_$DATE-$N"
+ 
 fi
 #If 12=false, single end data
 if [ "$#" -eq 12 ]; then
+    DATE=$(date +"%d%m%Y")
+    N=1
+
+    # Increment $N as long as a directory with that name exists                           
+    while [[ -d "${3}/Clean_$DATE-$N" ]] ; do
+        N=$(($N+1))
+    done
     bash prep_IBEDs_pipeline.sh ${1} ${2} ${3} ${4} ${5} ${6} ${7} ${8} ${9} ${10}
     #python ustacks.py "${2}" "${3}" "Clean_$DATE-$N" "single"
     #while true;do echo -n .;sleep 1;done &
@@ -60,7 +76,7 @@ if [ "$#" -eq 12 ]; then
     echo "ustacks is done"
     bash count_ustacks_values_IBEDs_pipeline.sh "${3}/Clean_$DATE-$N" ${2}  
     Rscript ustacks_values_IBEDs_pipeline.R "Final_ustack_Values.txt" ${3}/"Clean_$DATE-$N" --quiet 2>&1 >/dev/null
-    cstacks -o ${3}/"Clean_$DATE-$N" -s ${3}/"Clean_$DATE-$N"/614_fem_6-11-15 -s ${3}/"Clean_$DATE-$N"/614_male_6-11-15  -n ${8} -p 5 2>  ${3}/"Clean_$DATE-$N"/cstacks.log &
+    cstacks -o ${3}/"Clean_$DATE-$N" -s ${3}/"Clean_$DATE-$N"/614_fem_6-11-15 -s ${3}/"Clean_$DATE-$N"/614_male_6-11-15  -n ${8} -p 15 2>  ${3}/"Clean_$DATE-$N"/cstacks.log &
         PID=$!
     i=1
     sp="/-\|"
@@ -73,7 +89,7 @@ if [ "$#" -eq 12 ]; then
 #\b${sp:i++%${#sp}:1}"
         done
     echo "cstacks is done"
-    python sstacks_IBEDs_pipeline.py ${2} ${3} "Clean_$DATE-$N" &>/dev/null &
+    python sstacks_IBEDs_pipeline.py ${2} ${3} "Clean_$DATE-$N" ${12} &>/dev/null &
     PID=$!
     i=1
     sp="/-\|"
@@ -130,4 +146,4 @@ if [ "$#" -eq 12 ]; then
  
 fi
 
-sleep 8
+sleep 20

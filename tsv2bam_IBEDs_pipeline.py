@@ -18,7 +18,8 @@ def getSampleID(gs_barcodeFile):
 
 def executeCommand(ec_sampleIDs, ec_ab_path, ec_output_dir):
     for x in range(len(ec_sampleIDs)):
-        command1 = "tsv2bam -P " + ec_ab_path + "/" + ec_output_dir + " -s " + str(ec_sampleIDs[x])  + " -t 8 2> " + ec_ab_path + "/" + ec_output_dir + "/tsv2bam_" + str(ec_sampleIDs[x]) + ".log"
+        ec_sampleIDs_2 = str(ec_sampleIDs[x] + ".1")
+        command1 = "tsv2bam -P " + ec_ab_path + "/" + ec_output_dir + " -s " + ec_sampleIDs_2  + " -t 8 -R " + ec_ab_path + "/" + ec_output_dir + str(ec_sampleIDs[x]) + "  2> " + ec_ab_path + "/" + ec_output_dir + "/tsv2bam_" + str(ec_sampleIDs[x]) + ".log"
         os.system("cd " + ec_ab_path + "/" + ec_output_dir)
         os.system(command1)
         #print(command1)

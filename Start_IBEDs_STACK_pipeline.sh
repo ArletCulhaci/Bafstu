@@ -65,22 +65,32 @@ a=$(python3 input_scherm.py)
 analysis=$(echo $a | egrep -c "novo" )
 data=$(echo $a | egrep -c 'single')
 echo $a
-#echo $analysis
-#echo $data
+
+a_path=$(echo $a | tr " " "\n" | egrep '\-f' | awk '{print substr($0,3,length)}')
+barcodeFile=$(echo $a | tr " " "\n" | egrep "csv")
+popmap=$(echo $a | tr " " "\n" | egrep "txt")
+renzym=$(echo $a | tr " " "\n" | egrep '\-r' | awk '{print substr($0,3,length)}')
+quality_threshold=$(echo $a |  tr " " "\n" | egrep '\-s' | awk '{print substr($0,3,length)}' )
+truncate_length=$(echo $a | tr " " "\n" |  egrep '\-t' | awk '{print substr($0,3,length)}')
+window_width=$(echo $a | tr " " "\n" | egrep '\-w' | awk '{print substr($0,3,length)}')
+depth_stack=$(echo $a | tr " " "\n" | egrep '\-d' | awk '{print substr($0,3,length)}')
+dist_stacks=$(echo $a | tr " " "\n" | egrep '\-m' | awk '{print substr($0,3,length)}')
+dist_sec_reads=$(echo $a | tr " " "\n" | egrep '\-n' | awk '{print substr($0,3,length)}')
+
 if [[ "${analysis}" == "1" ]] && [[ "${data}" == "1" ]]
     then
-        echo "inside"
-        quality_threshold=$(echo $a |  tr " " "\n" | egrep '\-s' | awk '{print substr($0,3,length)}' )
-        truncate_length=$(echo $a | tr " " "\n" |  egrep '\-t' | awk '{print substr($0,3,length)}')
-        window_width=$(echo $a | tr " " "\n" | egrep '\-w' | awk '{print substr($0,3,length)}')
-        depth_stack=$(echo $a | tr " " "\n" | egrep '\-d' | awk '{print substr($0,3,length)}')
-        dist_stacks=$(echo $a | tr " " "\n" | egrep '\-m' | awk '{print substr($0,3,length)}')
-        dist_sec_reads=$(echo $a | tr " " "\n" | egrep '\-n' | awk '{print substr($0,3,length)}')
+        echo "novo single"
+        #quality_threshold=$(echo $a |  tr " " "\n" | egrep '\-s' | awk '{print substr($0,3,length)}' )
+        #truncate_length=$(echo $a | tr " " "\n" |  egrep '\-t' | awk '{print substr($0,3,length)}')
+        #window_width=$(echo $a | tr " " "\n" | egrep '\-w' | awk '{print substr($0,3,length)}')
+        #depth_stack=$(echo $a | tr " " "\n" | egrep '\-d' | awk '{print substr($0,3,length)}')
+        #dist_stacks=$(echo $a | tr " " "\n" | egrep '\-m' | awk '{print substr($0,3,length)}')
+        #dist_sec_reads=$(echo $a | tr " " "\n" | egrep '\-n' | awk '{print substr($0,3,length)}')
         inputFile=$(echo $a | tr " " "\n" | egrep "fq")
-        a_path=$(echo $a | tr " " "\n" | egrep '\-f' | awk '{print substr($0,3,length)}')
-        barcodeFile=$(echo $a | tr " " "\n" | egrep "csv")
-        popmap=$(echo $a | tr " " "\n" | egrep "txt")
-        renzym=$(echo $a | tr " " "\n" | egrep '\-r' | awk '{print substr($0,3,length)}')
+        #a_path=$(echo $a | tr " " "\n" | egrep '\-f' | awk '{print substr($0,3,length)}')
+        #barcodeFile=$(echo $a | tr " " "\n" | egrep "csv")
+        #popmap=$(echo $a | tr " " "\n" | egrep "txt")
+        #renzym=$(echo $a | tr " " "\n" | egrep '\-r' | awk '{print substr($0,3,length)}')
         #echo ${quality_threshold}
 	#truncate_length=$(echo $a | awk '{print $7}')
 	#quality_threshold=$(echo $a | awk '{print $8}')
@@ -90,6 +100,31 @@ if [[ "${analysis}" == "1" ]] && [[ "${data}" == "1" ]]
         #dist_sec_reads=$(echo $a | awk '{print $12}')
         paired=false
 fi
+if [[ "${analysis}" == "1" ]] && [[ "${data}" == "0" ]]
+    then
+        echo "novo paired"
+        #quality_threshold=$(echo $a |  tr " " "\n" | egrep '\-s' | awk '{print substr($0,3,length)}' )
+        #truncate_length=$(echo $a | tr " " "\n" |  egrep '\-t' | awk '{print substr($0,3,length)}')
+        #window_width=$(echo $a | tr " " "\n" | egrep '\-w' | awk '{print substr($0,3,length)}')
+        #depth_stack=$(echo $a | tr " " "\n" | egrep '\-d' | awk '{print substr($0,3,length)}')
+        #dist_stacks=$(echo $a | tr " " "\n" | egrep '\-m' | awk '{print substr($0,3,length)}')
+        #dist_sec_reads=$(echo $a | tr " " "\n" | egrep '\-n' | awk '{print substr($0,3,length)}')
+        inputFile1=$(echo $a | tr " " "\n" | egrep "fq" | egrep "forward")
+        inputFile2=$(echo $a | tr " " "\n" | egrep "fq" | egrep "forward")
+        #a_path=$(echo $a | tr " " "\n" | egrep '\-f' | awk '{print substr($0,3,length)}')
+        #barcodeFile=$(echo $a | tr " " "\n" | egrep "csv")
+        #popmap=$(echo $a | tr " " "\n" | egrep "txt")
+        #renzym=$(echo $a | tr " " "\n" | egrep '\-r' | awk '{print substr($0,3,length)}')
+        #echo ${quality_threshold}
+        #truncate_length=$(echo $a | awk '{print $7}')
+        #quality_threshold=$(echo $a | awk '{print $8}')
+        #window_width=$(echo $a | awk '{print $9}')
+        #depth_stack=$(echo $a | awk '{print $10}')
+        #dist_stacks=$(echo $a | awk '{print $11}')
+        #dist_sec_reads=$(echo $a | awk '{print $12}')
+        paired=true
+fi
+
 #echo $truncate_length
 echo "test"
 #check if all the needed files are present, if not the pipeline is aborted.
@@ -128,7 +163,7 @@ done
 	        fi
 
 # asking user input
-zenity  --info --title="Pipeline" --text="Be aware to blast a few reads on the full NCBI database, in order to find any form of contamination in your dataset." 
+#zenity  --info --title="Pipeline" --text="Be aware to blast a few reads on the full NCBI database, in order to find any form of contamination in your dataset." 
 #while true; do
 
  #   read -p "Do you have a reference genome? " yn
@@ -252,11 +287,11 @@ if [[ "${ref_genome}" == "false" ]] && [[ "${paired}" == "true" ]]
         then
         echo "Starting de novo based analysis on paired-end data."
 	echo ""
-        files=$(zenity --file-selection --multiple)
-        inputFile1=$(echo ${files} | cut -d"|" -f1)
-        inputFile2=$(echo ${files} | cut -d"|" -f2)
+        #files=$(zenity --file-selection --multiple)
+        #inputFile1=$(echo ${files} | cut -d"|" -f1)
+        #inputFile2=$(echo ${files} | cut -d"|" -f2)
 	#read -p "Enter both input files: " inputFile1 inputFile2
-      	echo "bash Highway_IBEDs_pipeline.sh ${inputFile1} ${inputFile2} ${barcodeFile} ${a_path} ${renzym} ${truncate_length} ${quality_threshold} ${window_width} ${dist_stacks} ${depth_stack} ${dist_sec_reads} ${ref_genome} ${paired}"
+      	bash Highway_IBEDs_pipeline.sh ${inputFile1} ${inputFile2} ${barcodeFile} ${a_path} ${renzym} ${truncate_length} ${quality_threshold} ${window_width} ${dist_stacks} ${depth_stack} ${dist_sec_reads} ${ref_genome} ${paired}
 
 fi
 
@@ -270,5 +305,5 @@ fi
 #		read -p "Enter your input file: " inputFile1
 #		bash Highway_IBEDs_pipeline.sh ${inputFile1} ${barcodeFile} ${a_path}
 #fi
-sleep 10
+sleep 3
 trap SIGINT

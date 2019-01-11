@@ -22,9 +22,9 @@ if [ "${1}" == "--h" ] || [ "${1}" == "--help" ] || [ "${1}" == "-h" ] || [ "${1
 fi
 
 # save number of individuals from the barcode file
-num_ind="$(cat ${2} | wc -l)"
 
 if [ "$#" -eq 11 ]; then 
+    num_ind="$(cat ${3} | wc -l)"
     DATE=$(date +"%d%m%Y")
     N=1
 
@@ -32,16 +32,24 @@ if [ "$#" -eq 11 ]; then
     while [[ -d "${4}/Clean_$DATE-$N" ]] ; do
         N=$(($N+1))
     done
-
+    echo ${4} "in prep"
     mkdir "${4}/Clean_$DATE-$N"	
-    process_radtags -1 "${4}"/"${1}" -2 "${4}"/"${2}" -o ${4}/"Clean_$DATE-$N" -b "${3}" -e ${5} -r -t ${6} -q -D -s ${7} -w ${8}
-    echo process_radtags -1 "${4}"/"${1}" -2 "${4}"/"${2}" -o ${4}/"Clean_$DATE-$N" -b "${3}" -e ${5} -r -t ${6} -q -D -s ${7} -w ${8} > ${4}/"Clean_$DATE-$N"/Command_log.txt
-    num_ind="$((ls -l | egrep '.fq' | wc -l))"
-    num_ind=num_ind-2
-    echo ${num_ind}
-
+    process_radtags -1 "${1}" -2 "${2}" -o ${4}/"Clean_$DATE-$N" -b "${3}" -e ${5} -r -t ${6} -q -D -s ${7} -w ${8}  &>/dev/null &
+    PID=$!
+    i=1
+    sp="/-\|"
+    echo -n ' '
+    while [ -d /proc/$PID ]
+        do
+            printf "\b${sp:i++%${#sp}:1}"
+#\b${sp:i++%${#sp}:1}"
+        done
+    echo "Process_RADtags is done"
+    echo process_radtags -1 "${1}" -2 "${2}" -o ${4}/"Clean_$DATE-$N" -b "${3}" -e ${5} -r -t ${6} -q -D -s ${7} -w ${8} > ${4}/"Clean_$DATE-$N"/Command_log.txt
+    cat ${4}/"Clean_$DATE-$N"/process_radtags* | tail -n +12 | awk '{print $2, $3, $6}' | head -${num_ind} | tr ' ' ';' > ${4}/"Clean_$DATE-$N"/Values_run_total_reads_bf_process.txt
 fi
 if [ "$#" -eq 10 ]; then
+    num_ind="$(cat ${2} | wc -l)"
     DATE=$(date +"%d%m%Y")
     N=1
 
