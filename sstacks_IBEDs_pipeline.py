@@ -24,7 +24,7 @@ def executeCommand(ec_sampleIDs, ec_ab_path, ec_output_dir, ec_data_type):
             #print(command1)
             os.system(command1)
         else:
-             command1 = "sstacks -c " + ec_ab_path + "/" + ec_output_dir + " -s " + ec_ab_path + "/" + ec_output_dir + "/" + str(ec_sampleIDs[x]) + ".1 -o " + ec_ab_path + "/" + ec_output_dir +" -p 5 2> " + ec_ab_path + "/" + ec_output_dir + "/" + "sstack_" + str(ec_sampleIDs[x]) + ".log"
+             command1 = "sstacks -c " + ec_ab_path + "/" + ec_output_dir + " -s " + ec_ab_path + "/" + ec_output_dir + "/" + str(ec_sampleIDs[x]) + " -o " + ec_ab_path + "/" + ec_output_dir +" -p 5 2> " + ec_ab_path + "/" + ec_output_dir + "/" + "sstack_" + str(ec_sampleIDs[x]) + ".log"
              #print(command1)
              os.system(command1)
 

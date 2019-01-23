@@ -65,7 +65,7 @@ a=$(python3 input_scherm.py)
 analysis=$(echo $a | egrep -c "novo" )
 data=$(echo $a | egrep -c 'single')
 echo $a
-
+#echo $analysis
 a_path=$(echo $a | tr " " "\n" | egrep '\-f' | awk '{print substr($0,3,length)}')
 barcodeFile=$(echo $a | tr " " "\n" | egrep "csv")
 popmap=$(echo $a | tr " " "\n" | egrep "txt")
@@ -76,7 +76,10 @@ window_width=$(echo $a | tr " " "\n" | egrep '\-w' | awk '{print substr($0,3,len
 depth_stack=$(echo $a | tr " " "\n" | egrep '\-d' | awk '{print substr($0,3,length)}')
 dist_stacks=$(echo $a | tr " " "\n" | egrep '\-m' | awk '{print substr($0,3,length)}')
 dist_sec_reads=$(echo $a | tr " " "\n" | egrep '\-n' | awk '{print substr($0,3,length)}')
-
+mother=$(echo $a | tr " " "\n" | egrep '\-x' | awk '{print substr($0,3,length)}')
+father=$(echo $a | tr " " "\n" | egrep '\-y' | awk '{print substr($0,3,length)}')
+echo $mother
+echo $father
 if [[ "${analysis}" == "1" ]] && [[ "${data}" == "1" ]]
     then
         echo "novo single"
@@ -110,7 +113,7 @@ if [[ "${analysis}" == "1" ]] && [[ "${data}" == "0" ]]
         #dist_stacks=$(echo $a | tr " " "\n" | egrep '\-m' | awk '{print substr($0,3,length)}')
         #dist_sec_reads=$(echo $a | tr " " "\n" | egrep '\-n' | awk '{print substr($0,3,length)}')
         inputFile1=$(echo $a | tr " " "\n" | egrep "fq" | egrep "forward")
-        inputFile2=$(echo $a | tr " " "\n" | egrep "fq" | egrep "forward")
+        inputFile2=$(echo $a | tr " " "\n" | egrep "fq" | egrep "reverse")
         #a_path=$(echo $a | tr " " "\n" | egrep '\-f' | awk '{print substr($0,3,length)}')
         #barcodeFile=$(echo $a | tr " " "\n" | egrep "csv")
         #popmap=$(echo $a | tr " " "\n" | egrep "txt")
@@ -124,7 +127,25 @@ if [[ "${analysis}" == "1" ]] && [[ "${data}" == "0" ]]
         #dist_sec_reads=$(echo $a | awk '{print $12}')
         paired=true
 fi
-
+if [[ "${analysis}" == "0" ]] && [[ "${data}" == "0" ]] 
+    then 
+       echo "ref paired"
+       ref_genome_File=$(echo $a | tr " " "\n" | egrep '\-g' | awk '{print substr($0,3,length)}')
+       echo $ref_genome_File
+       inputFile1=$(echo $a | tr " " "\n" | egrep "fq" | egrep "forward")
+       inputFile2=$(echo $a | tr " " "\n" | egrep "fq" | egrep "reverse")
+       ref_genome=true
+       paired=true
+fi
+if [[ "${analysis}" == "0" ]] && [[ "${data}" == "1" ]] 
+    then
+       echo "ref single"
+       ref_genome_File=$(echo $a | tr " " "\n" | egrep '\-g' | awk '{print substr($0,3,length)}')
+       echo $ref_genome_File
+       inputFile=$(echo $a | tr " " "\n" | egrep "fq")
+       ref_genome=true
+       paired=false
+fi
 #echo $truncate_length
 echo "test"
 #check if all the needed files are present, if not the pipeline is aborted.
@@ -257,20 +278,18 @@ if [[ "${ref_genome}" == "true" ]] && [[ "${paired}" == "true" ]]
 	then
 	echo "Starting reference based analysis on paired-end data."
 	echo " "
-	read -p "Enter the .fasta or .fa file of yout reference genome: " ref_fasta
-	echo ""
-        files=$(zenity --file-selection --multiple)
-        inputFile1=$(echo ${files} | cut -d"|" -f1)
-        inputFile2=$(echo ${files} | cut -d"|" -f2)
-	read -p "Enter both input files: " inputFile1 inputFile2
+        echo $inputFile1
+        echo $inputFile2
 fi
 if [[ "${ref_genome}" == "true" ]] && [[ "${paired}" == "false" ]]
 	then 
 	echo "Starting reference based analysis on single-end data."
 	echo " "
-        read -p "Enter the .fasta or .fa file of yout reference genome: " ref_fasta
-        echo ""
-        inputFile=$(zenity --file-selection --title="Choose a barcode file")
+        echo $inputFile
+        echo $ref_genome_File
+        bash Highway_IBEDs_pipeline.sh ${inputFile} ${barcodeFile} ${a_path} ${renzym} ${truncate_length} ${quality_threshold} ${window_width} ${dist_stacks} ${depth_stack} ${dist_sec_reads} ${ref_genome} ${paired} ${mother} ${father}
+
+        #inputFile=$(zenity --file-selection --title="Choose a barcode file")
         #read -p "Enter your input file: " inputFile
 
 fi
@@ -280,7 +299,7 @@ if [[ "${ref_genome}" == "false" ]] && [[ "${paired}" == "false" ]]
 	echo " "
         #inputFile=$(zenity --file-selection --title="Choose your input file")
         #read -p "Enter your input file: " inputFile
-	bash Highway_IBEDs_pipeline.sh ${inputFile} ${barcodeFile} ${a_path} ${renzym} ${truncate_length} ${quality_threshold} ${window_width} ${dist_stacks} ${depth_stack} ${dist_sec_reads} ${ref_genome} ${paired}
+	bash Highway_IBEDs_pipeline.sh ${inputFile} ${barcodeFile} ${a_path} ${renzym} ${truncate_length} ${quality_threshold} ${window_width} ${dist_stacks} ${depth_stack} ${dist_sec_reads} ${ref_genome} ${paired} ${mother} ${father}
 
 fi
 if [[ "${ref_genome}" == "false" ]] && [[ "${paired}" == "true" ]]
@@ -291,7 +310,7 @@ if [[ "${ref_genome}" == "false" ]] && [[ "${paired}" == "true" ]]
         #inputFile1=$(echo ${files} | cut -d"|" -f1)
         #inputFile2=$(echo ${files} | cut -d"|" -f2)
 	#read -p "Enter both input files: " inputFile1 inputFile2
-      	bash Highway_IBEDs_pipeline.sh ${inputFile1} ${inputFile2} ${barcodeFile} ${a_path} ${renzym} ${truncate_length} ${quality_threshold} ${window_width} ${dist_stacks} ${depth_stack} ${dist_sec_reads} ${ref_genome} ${paired}
+      	bash Highway_IBEDs_pipeline.sh ${inputFile1} ${inputFile2} ${barcodeFile} ${a_path} ${renzym} ${truncate_length} ${quality_threshold} ${window_width} ${dist_stacks} ${depth_stack} ${dist_sec_reads} ${ref_genome} ${paired} ${mother} ${father}
 
 fi
 
@@ -305,5 +324,5 @@ fi
 #		read -p "Enter your input file: " inputFile1
 #		bash Highway_IBEDs_pipeline.sh ${inputFile1} ${barcodeFile} ${a_path}
 #fi
-sleep 3
+sleep 13
 trap SIGINT
