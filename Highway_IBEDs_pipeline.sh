@@ -21,7 +21,7 @@ if [ "${1}" == "--h" ] || [ "${1}" == "--help" ] || [ "${1}" == "-h" ] || [ "${1
 	exit
 fi
 # IF 13 = true, paired data  
-if [ "$#" -eq 13 ]; then
+if [ "$#" -eq 15 ]; then
     DATE=$(date +"%d%m%Y")
     N=1
 
@@ -36,7 +36,7 @@ if [ "$#" -eq 13 ]; then
     #python ustacks.py "${3}" "${4}" "Clean_$DATE-$N" "paired" 
     bash count_ustacks_values_IBEDs_pipeline.sh "${4}/Clean_$DATE-$N" ${3}
     Rscript ustacks_values_IBEDs_pipeline.R "Final_ustack_Values.txt" ${4}/"Clean_$DATE-$N" --quiet 2>&1 >/dev/null
-    cstacks -o ${4}/"Clean_$DATE-$N" -s ${4}/"Clean_$DATE-$N"/614_fem_6-11-15.1 -s ${4}/"Clean_$DATE-$N"/614_male_6-11-15.1  -n ${9} -p 15 2>  ${4}/"Clean_$DATE-$N"/cstacks.log
+    cstacks -o ${4}/"Clean_$DATE-$N" -s ${4}/"Clean_$DATE-$N"/${14} -s ${4}/"Clean_$DATE-$N"/${15}  -n ${9} -p 15 2>  ${4}/"Clean_$DATE-$N"/cstacks.log
     python sstacks_IBEDs_pipeline.py ${3} ${4} "Clean_$DATE-$N" ${13}  
     bash count_sstacks_values_IBEDs_pipeline.sh "${4}/Clean_$DATE-$N" ${3}
     Rscript sstacks_values_IBEDs_pipeline.R "Final_sstack_Values.txt" ${4}/"Clean_$DATE-$N" --quiet 2>&1 >/dev/null
@@ -44,7 +44,7 @@ if [ "$#" -eq 13 ]; then
  
 fi
 #If 12=false, single end data
-if [ "$#" -eq 12 ]; then
+if [ "$#" -eq 14 ]; then
     DATE=$(date +"%d%m%Y")
     N=1
 
@@ -76,7 +76,7 @@ if [ "$#" -eq 12 ]; then
     echo "ustacks is done"
     bash count_ustacks_values_IBEDs_pipeline.sh "${3}/Clean_$DATE-$N" ${2}  
     Rscript ustacks_values_IBEDs_pipeline.R "Final_ustack_Values.txt" ${3}/"Clean_$DATE-$N" --quiet 2>&1 >/dev/null
-    cstacks -o ${3}/"Clean_$DATE-$N" -s ${3}/"Clean_$DATE-$N"/614_fem_6-11-15 -s ${3}/"Clean_$DATE-$N"/614_male_6-11-15  -n ${8} -p 15 2>  ${3}/"Clean_$DATE-$N"/cstacks.log &
+    cstacks -o ${3}/"Clean_$DATE-$N" -s ${3}/"Clean_$DATE-$N"/${13} -s ${3}/"Clean_$DATE-$N"/${14}  -n ${8} -p 15 2>  ${3}/"Clean_$DATE-$N"/cstacks.log &
         PID=$!
     i=1
     sp="/-\|"

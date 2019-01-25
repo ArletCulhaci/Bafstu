@@ -30,6 +30,8 @@ class Window(Frame):
             depth = v.get()
             mm = z.get()
             msec = x.get()
+            mother = eMother.get()
+            father = eFather.get()
             if (truncate == ""):
                 truncate = "140"
             if (score == ""):
@@ -41,6 +43,8 @@ class Window(Frame):
             print("-d" + depth)
             print("-m" + mm)
             print("-n" + msec)
+            print("-y" + father)
+            print("-x" + mother)
             if (str(var1.get()) == "2"):
                 button_genome.place(x = 300 , y=50)
                 print("ref")
@@ -123,8 +127,8 @@ class Window(Frame):
             # Allow user to select a directory and store it in global var
             # called folder_path
             #global folder_path
-            filename = filedialog.askopenfilename()
-            print(filename)
+            filename = filedialog.askdirectory()
+            print("-g" + filename)
             filename_formatted = filename.split("/")
             labl_genome = Label(self, text=filename_formatted[-1])
             labl_genome.place(x=350, y=50)
@@ -210,6 +214,15 @@ class Window(Frame):
         var_sec.set("1")
         x = Spinbox(root, from_=0, to=5, textvariable=var_sec)
         #x.pack()
+        var_father = StringVar()
+        var_father.set("")
+        eFather = Entry(root, text="", width=20, textvariable=var_father)
+
+        var_mother = StringVar()
+        var_mother.set("")
+        eMother = Entry(root, text="", width=20, textvariable=var_mother)
+        labl_father = Label(self, text="Father")
+        labl_mother = Label(self, text="Mother")
         labl_renzym = Label(self, text="Choose your restriction enzyme")
         quitButton = Button(self, text="Quit", command= quit, activeforeground='red')
         labl_analysis = Label(self, text="Choose your data analyis type")
@@ -250,7 +263,11 @@ class Window(Frame):
         labl_outdir.place(x = 0, y = 250)
         labl_barcodes.place(x  = 150, y = 250)
         labl_popmap_file.place(x = 250, y=250)
+        labl_father.place(x = 350, y=250)
+        labl_mother.place(x=550, y=250)
         button3.place(x = 150, y=300)
+        eFather.place(x = 350, y=305)
+        eMother.place(x = 550, y=305)
         #button4.place(x = 250, y=300)
         button5.place(x = 250, y=300)
         labl_param.place(x = 0, y=350)
@@ -259,7 +276,7 @@ class Window(Frame):
 root = Tk()
 
 #size of the window
-root.geometry("600x760")
+root.geometry("760x760")
 label = Label(root)
 label.pack()
 app = Window(root)
