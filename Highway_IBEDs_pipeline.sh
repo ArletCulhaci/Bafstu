@@ -20,8 +20,32 @@ if [ "${1}" == "--h" ] || [ "${1}" == "--help" ] || [ "${1}" == "-h" ] || [ "${1
 		echo ""  
 	exit
 fi
-# IF 13 = true, paired data  
-if [ "$#" -eq 15 ]; then
+# IF 13 = true, paired data 
+if [ "$#" -eq 17 ]; then
+    DATE=$(date +"%d%m%Y")
+    N=1
+
+    # Increment $N as long as a directory with that name exists                           
+    while [[ -d "${4}/Clean_$DATE-$N" ]] ; do
+        N=$(($N+1))
+    done
+bash prep_IBEDs_pipeline.sh "${1}" "${2}" "${3}" "${4}" ${5} ${6} ${7} ${8} ${9} ${10} ${11}
+Rscript initial_reads_IBEDs_pipeline.R "Values_run_total_reads_bf_process.txt" ${4}/"Clean_$DATE-$N" --quiet 2>&1 >/dev/null
+echo "A plot containing the initial number of reads before process_radtags can be found in the following directoty ${4}/"Clean_$DATE-$N""
+file=$(ls ${16} | egrep -m 1 ".bt2")
+ref_index=${file::${#file}-6}
+echo $ref_index
+while read col1
+do
+names=$(echo $col1 | awk '{print $2}') 
+bowtie2 -x ${16}/$ref_index -1 ${4}/"Clean_$DATE-$N"/${names}.1.fq -2 ${4}/"Clean_$DATE-$N"/${names}.2.fq -S ${4}/"Clean_$DATE-$N"/${names}.sam 2> ${4}/"Clean_$DATE-$N"/${names}_alignment.log
+done < ${3}
+fi
+#ref_map.pl -T 15 -o ./ --popmap ../Popmap_17_dec_selection.txt --samples ../bowtie_forward  -X "populations:--vcf" 2> log_ref_map_11_12.txt
+if [ "$#" -eq 16 ] && [ "${16}" -eq 2 ]; then
+   echo "ref single high"
+fi 
+if [ "$#" -eq 16 ] && [ "${16}" -eq 4 ]; then
     DATE=$(date +"%d%m%Y")
     N=1
 
@@ -29,6 +53,7 @@ if [ "$#" -eq 15 ]; then
     while [[ -d "${4}/Clean_$DATE-$N" ]] ; do
         N=$(($N+1))
     done  
+    echo "Novo paired high"
     bash prep_IBEDs_pipeline.sh "${1}" "${2}" "${3}" "${4}" ${5} ${6} ${7} ${8} ${9} ${10} ${11}
     Rscript initial_reads_IBEDs_pipeline.R "Values_run_total_reads_bf_process.txt" ${4}/"Clean_$DATE-$N" --quiet 2>&1 >/dev/null
     echo "A plot containing the initial number of reads before process_radtags can be found in the following directoty ${4}/"Clean_$DATE-$N""
@@ -44,7 +69,7 @@ if [ "$#" -eq 15 ]; then
  
 fi
 #If 12=false, single end data
-if [ "$#" -eq 14 ]; then
+if [ "$#" -eq 15 ]; then
     DATE=$(date +"%d%m%Y")
     N=1
 
@@ -52,6 +77,7 @@ if [ "$#" -eq 14 ]; then
     while [[ -d "${3}/Clean_$DATE-$N" ]] ; do
         N=$(($N+1))
     done
+    echo "novo single high"
     bash prep_IBEDs_pipeline.sh ${1} ${2} ${3} ${4} ${5} ${6} ${7} ${8} ${9} ${10}
     #python ustacks.py "${2}" "${3}" "Clean_$DATE-$N" "single"
     #while true;do echo -n .;sleep 1;done &
