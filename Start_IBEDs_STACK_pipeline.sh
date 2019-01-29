@@ -280,6 +280,8 @@ if [[ "${ref_genome}" == "true" ]] && [[ "${paired}" == "true" ]]
 	echo " "
         echo $inputFile1
         echo $inputFile2
+        bash Highway_IBEDs_pipeline.sh ${inputFile1} ${inputFile2} ${barcodeFile} ${a_path} ${renzym} ${truncate_length} ${quality_threshold} ${window_width} ${dist_stacks} ${depth_stack} ${dist_sec_reads} ${ref_genome} ${paired} ${mother} ${father} ${ref_genome_File} 1
+
 fi
 if [[ "${ref_genome}" == "true" ]] && [[ "${paired}" == "false" ]]
 	then 
@@ -287,7 +289,7 @@ if [[ "${ref_genome}" == "true" ]] && [[ "${paired}" == "false" ]]
 	echo " "
         echo $inputFile
         echo $ref_genome_File
-        bash Highway_IBEDs_pipeline.sh ${inputFile} ${barcodeFile} ${a_path} ${renzym} ${truncate_length} ${quality_threshold} ${window_width} ${dist_stacks} ${depth_stack} ${dist_sec_reads} ${ref_genome} ${paired} ${mother} ${father}
+        bash Highway_IBEDs_pipeline.sh ${inputFile} ${barcodeFile} ${a_path} ${renzym} ${truncate_length} ${quality_threshold} ${window_width} ${dist_stacks} ${depth_stack} ${dist_sec_reads} ${ref_genome} ${paired} ${mother} ${father} ${ref_genome_File} 2
 
         #inputFile=$(zenity --file-selection --title="Choose a barcode file")
         #read -p "Enter your input file: " inputFile
@@ -299,7 +301,7 @@ if [[ "${ref_genome}" == "false" ]] && [[ "${paired}" == "false" ]]
 	echo " "
         #inputFile=$(zenity --file-selection --title="Choose your input file")
         #read -p "Enter your input file: " inputFile
-	bash Highway_IBEDs_pipeline.sh ${inputFile} ${barcodeFile} ${a_path} ${renzym} ${truncate_length} ${quality_threshold} ${window_width} ${dist_stacks} ${depth_stack} ${dist_sec_reads} ${ref_genome} ${paired} ${mother} ${father}
+	bash Highway_IBEDs_pipeline.sh ${inputFile} ${barcodeFile} ${a_path} ${renzym} ${truncate_length} ${quality_threshold} ${window_width} ${dist_stacks} ${depth_stack} ${dist_sec_reads} ${ref_genome} ${paired} ${mother} ${father} 3
 
 fi
 if [[ "${ref_genome}" == "false" ]] && [[ "${paired}" == "true" ]]
@@ -310,7 +312,7 @@ if [[ "${ref_genome}" == "false" ]] && [[ "${paired}" == "true" ]]
         #inputFile1=$(echo ${files} | cut -d"|" -f1)
         #inputFile2=$(echo ${files} | cut -d"|" -f2)
 	#read -p "Enter both input files: " inputFile1 inputFile2
-      	bash Highway_IBEDs_pipeline.sh ${inputFile1} ${inputFile2} ${barcodeFile} ${a_path} ${renzym} ${truncate_length} ${quality_threshold} ${window_width} ${dist_stacks} ${depth_stack} ${dist_sec_reads} ${ref_genome} ${paired} ${mother} ${father}
+      	bash Highway_IBEDs_pipeline.sh ${inputFile1} ${inputFile2} ${barcodeFile} ${a_path} ${renzym} ${truncate_length} ${quality_threshold} ${window_width} ${dist_stacks} ${depth_stack} ${dist_sec_reads} ${ref_genome} ${paired} ${mother} ${father} 4
 
 fi
 
