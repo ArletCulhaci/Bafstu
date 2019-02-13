@@ -278,8 +278,7 @@ if [[ "${ref_genome}" == "true" ]] && [[ "${paired}" == "true" ]]
 	then
 	echo "Starting reference based analysis on paired-end data."
 	echo " "
-        echo $inputFile1
-        echo $inputFile2
+        echo $a_path
         bash Highway_IBEDs_pipeline.sh ${inputFile1} ${inputFile2} ${barcodeFile} ${a_path} ${renzym} ${truncate_length} ${quality_threshold} ${window_width} ${dist_stacks} ${depth_stack} ${dist_sec_reads} ${ref_genome} ${paired} ${mother} ${father} ${ref_genome_File} 1
 
 fi
