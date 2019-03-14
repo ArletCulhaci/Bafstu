@@ -22,10 +22,10 @@ do
     cat  ustacks_${names}.log | egrep "Assembled|Final" | egrep -v "blacklisted" | sed -n '2p' | awk '{print $6}' | cut -d'=' -f 2  >> total
     tr "\n" ";" <  total > counts.txt
     sed 's/614_/\n614_/g'< counts.txt > counts2.txt
-    sed 's/210_/\n210_/g'< counts2.txt > Final_ustack_Values.txt
+    sed 's/210_/\n210_/g'< counts2.txt > ../Final_ustack_Values.txt
 done < ${2}
-sed -i '1 i\Sample;Total Reads;Initial nr stacks;Nr primary reads;Percentage primary reads;Perecentage secondary reads;Inital nr blacklisted stacks;Final nr blacklisted stacks;Final nr loci;Mean coverage;stdev;Max;Nr reads in stacks' Final_ustack_Values.txt
-sed -i '2d' Final_ustack_Values.txt
+sed -i '1 i\Sample;Total Reads;Initial nr stacks;Nr primary reads;Percentage primary reads;Perecentage secondary reads;Inital nr blacklisted stacks;Final nr blacklisted stacks;Final nr loci;Mean coverage;stdev;Max;Nr reads in stacks' ../Final_ustack_Values.txt
+sed -i '2d' ../Final_ustack_Values.txt
 rm counts.txt
 rm counts2.txt
 rm total

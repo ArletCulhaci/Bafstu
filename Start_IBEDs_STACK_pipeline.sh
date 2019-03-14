@@ -64,8 +64,6 @@ sleep 2
 a=$(python3 input_scherm.py)
 analysis=$(echo $a | egrep -c "novo" )
 data=$(echo $a | egrep -c 'single')
-echo $a
-#echo $analysis
 a_path=$(echo $a | tr " " "\n" | egrep '\-f' | awk '{print substr($0,3,length)}')
 barcodeFile=$(echo $a | tr " " "\n" | egrep "csv")
 popmap=$(echo $a | tr " " "\n" | egrep "txt")
@@ -78,76 +76,35 @@ dist_stacks=$(echo $a | tr " " "\n" | egrep '\-m' | awk '{print substr($0,3,leng
 dist_sec_reads=$(echo $a | tr " " "\n" | egrep '\-n' | awk '{print substr($0,3,length)}')
 mother=$(echo $a | tr " " "\n" | egrep '\-x' | awk '{print substr($0,3,length)}')
 father=$(echo $a | tr " " "\n" | egrep '\-y' | awk '{print substr($0,3,length)}')
-echo $mother
-echo $father
+
 if [[ "${analysis}" == "1" ]] && [[ "${data}" == "1" ]]
     then
-        echo "novo single"
-        #quality_threshold=$(echo $a |  tr " " "\n" | egrep '\-s' | awk '{print substr($0,3,length)}' )
-        #truncate_length=$(echo $a | tr " " "\n" |  egrep '\-t' | awk '{print substr($0,3,length)}')
-        #window_width=$(echo $a | tr " " "\n" | egrep '\-w' | awk '{print substr($0,3,length)}')
-        #depth_stack=$(echo $a | tr " " "\n" | egrep '\-d' | awk '{print substr($0,3,length)}')
-        #dist_stacks=$(echo $a | tr " " "\n" | egrep '\-m' | awk '{print substr($0,3,length)}')
-        #dist_sec_reads=$(echo $a | tr " " "\n" | egrep '\-n' | awk '{print substr($0,3,length)}')
-        inputFile=$(echo $a | tr " " "\n" | egrep "fq")
-        #a_path=$(echo $a | tr " " "\n" | egrep '\-f' | awk '{print substr($0,3,length)}')
-        #barcodeFile=$(echo $a | tr " " "\n" | egrep "csv")
-        #popmap=$(echo $a | tr " " "\n" | egrep "txt")
-        #renzym=$(echo $a | tr " " "\n" | egrep '\-r' | awk '{print substr($0,3,length)}')
-        #echo ${quality_threshold}
-	#truncate_length=$(echo $a | awk '{print $7}')
-	#quality_threshold=$(echo $a | awk '{print $8}')
-        #window_width=$(echo $a | awk '{print $9}')
-        #depth_stack=$(echo $a | awk '{print $10}')
-        #dist_stacks=$(echo $a | awk '{print $11}')
-        #dist_sec_reads=$(echo $a | awk '{print $12}')
+        inputFile=$(echo $a | tr " " "\n" | egrep "fq|gz")
         paired=false
 fi
+
 if [[ "${analysis}" == "1" ]] && [[ "${data}" == "0" ]]
     then
-        echo "novo paired"
-        #quality_threshold=$(echo $a |  tr " " "\n" | egrep '\-s' | awk '{print substr($0,3,length)}' )
-        #truncate_length=$(echo $a | tr " " "\n" |  egrep '\-t' | awk '{print substr($0,3,length)}')
-        #window_width=$(echo $a | tr " " "\n" | egrep '\-w' | awk '{print substr($0,3,length)}')
-        #depth_stack=$(echo $a | tr " " "\n" | egrep '\-d' | awk '{print substr($0,3,length)}')
-        #dist_stacks=$(echo $a | tr " " "\n" | egrep '\-m' | awk '{print substr($0,3,length)}')
-        #dist_sec_reads=$(echo $a | tr " " "\n" | egrep '\-n' | awk '{print substr($0,3,length)}')
-        inputFile1=$(echo $a | tr " " "\n" | egrep "fq" | egrep "forward")
-        inputFile2=$(echo $a | tr " " "\n" | egrep "fq" | egrep "reverse")
-        #a_path=$(echo $a | tr " " "\n" | egrep '\-f' | awk '{print substr($0,3,length)}')
-        #barcodeFile=$(echo $a | tr " " "\n" | egrep "csv")
-        #popmap=$(echo $a | tr " " "\n" | egrep "txt")
-        #renzym=$(echo $a | tr " " "\n" | egrep '\-r' | awk '{print substr($0,3,length)}')
-        #echo ${quality_threshold}
-        #truncate_length=$(echo $a | awk '{print $7}')
-        #quality_threshold=$(echo $a | awk '{print $8}')
-        #window_width=$(echo $a | awk '{print $9}')
-        #depth_stack=$(echo $a | awk '{print $10}')
-        #dist_stacks=$(echo $a | awk '{print $11}')
-        #dist_sec_reads=$(echo $a | awk '{print $12}')
-        paired=true
+        inputFile1=$(echo $a | tr " " "\n" | egrep "fq|gz" | egrep "forward|R1")
+        inputFile2=$(echo $a | tr " " "\n" | egrep "fq|gz" | egrep "reverse|R2")
 fi
+
 if [[ "${analysis}" == "0" ]] && [[ "${data}" == "0" ]] 
     then 
-       echo "ref paired"
        ref_genome_File=$(echo $a | tr " " "\n" | egrep '\-g' | awk '{print substr($0,3,length)}')
-       echo $ref_genome_File
-       inputFile1=$(echo $a | tr " " "\n" | egrep "fq" | egrep "forward")
-       inputFile2=$(echo $a | tr " " "\n" | egrep "fq" | egrep "reverse")
+       inputFile1=$(echo $a | tr " " "\n" | egrep "fq|gz" | egrep "forward|R1")
+       inputFile2=$(echo $a | tr " " "\n" | egrep "fq|gz" | egrep "reverse|R2")
        ref_genome=true
-       paired=true
 fi
+
 if [[ "${analysis}" == "0" ]] && [[ "${data}" == "1" ]] 
     then
-       echo "ref single"
        ref_genome_File=$(echo $a | tr " " "\n" | egrep '\-g' | awk '{print substr($0,3,length)}')
-       echo $ref_genome_File
-       inputFile=$(echo $a | tr " " "\n" | egrep "fq")
+       inputFile=$(echo $a | tr " " "\n" | egrep "fq|gz")
        ref_genome=true
        paired=false
 fi
-#echo $truncate_length
-echo "test"
+
 #check if all the needed files are present, if not the pipeline is aborted.
 missing=false
 for pipelineFile in \
@@ -159,8 +116,7 @@ for pipelineFile in \
         ustacks_values_IBEDs_pipeline.R\
         sstacks_IBEDs_pipeline.py\
         count_sstacks_values_IBEDs_pipeline.sh\
-        sstacks_values_IBEDs_pipeline.R\
-        tsv2bam_IBEDs_pipeline.py
+        sstacks_values_IBEDs_pipeline.R
 	do
 	if ! [ -f "${pipelineFile}" ]
 		then
@@ -183,147 +139,34 @@ done
 			done
 	        fi
 
-# asking user input
-#zenity  --info --title="Pipeline" --text="Be aware to blast a few reads on the full NCBI database, in order to find any form of contamination in your dataset." 
-#while true; do
-
- #   read -p "Do you have a reference genome? " yn
-
-  #  case $yn in
-
-   #     [Yy]* )                 
-    #            ref_genome=true     
-     #           break;;
-
-      #  [Nn]* )                 
-       #         break;;
-
-        #* ) echo "Please answer yes or no.";;
-
-   # esac
-
-#done
-#while true; do
-
- #   read -p "Do you have paired data? " yn
-
-  #  case $yn in
-
-   #     [Yy]* )
-    #            break;;
-
-     #   [Nn]* )
-#		paired=false
- #               break;;
-
-  #      * ) echo "Please answer yes or no.";;
-
-   # esac
-
-#done
-#barcodeFile=$(zenity --file-selection --title="Choose a barcode file")
-#read -p "Enter the absolute path to the directory containing the input files: " a_path
-#a_path=$(zenity  --file-selection --title="Choose a directory" --directory)
-#a_path=$((zenity  --file-selection --title="Choose a directory" --directory ))
-#if the user wants to change the default parameters, ask for new parameters.
-#while true; do
-
- #   read -p "Do you want to change the default parameters: " yn
-
-  #  case $yn in
-
-       # [Yy]* ) 
-	#	read -p "Set your restriction enzyme: " renzym
-	#	echo ""                
-	#	read -p "Set truncate length: " truncate_length
-         #       echo " "
-          #      read -p "Set window width: " window_width
-	#	echo ""
-	#	read -p "Set Phred quality threshold: " quality_threshold
-	#	echo ""
-	#	read -p "Set the maximum allowed mismatches between similar stacks: " dist_stacks
-	#	echo ""
-	#	read -p "Set the minimum number of reads to form a stack (depth): " depth_stack
-	#	echo ""
-	#	read -p "Set the maximum allowed mismatches between the stack and secondary reads (N+1): " dist_sec_reads
-	#	echo ""
-	#	echo "Using custom parameters."
-	#	echo "Restriction enzyme is set to ${renzym}"
-        #        echo "Truncating reads to ${truncate_length} bp."
-         #       echo "Using a sliding window of ${window_width} bp to asses te quality of the reads. "
-          #      echo "The Phred quality threshold is set to ${quality_threshold}"
-          #      echo "The maximum allowed mismatches between stacks is ${dist_stacks}"
-           #     echo "The minimum number of reads to form staks (depth) is ${depth_stack}"
-            #    echo "The maximum allowed mismatches between stacks and secondary reads is N + ${dist_sec_reads}"
-
-#	        break;;
-
- #       [Nn]* )                 
-#		echo "Using defaults parameters."
-#		echo "Restriction enzyme is set to ${renzym}"
- #               echo "Truncating reads to ${truncate_length} bp."
-  #              echo "Using a sliding window of ${window_width} bp to asses te quality of the reads. "
-   #             echo "The Phred quality threshold is set to ${quality_threshold}"
-    #            echo "The maximum allowed mismatches between stacks is ${dist_stacks}"
-     #           echo "The minimum number of reads to form staks (depth) is ${depth_stack}"
-#		echo "The maximum allowed mismatches between stacks and secondary reads is N + ${dist_sec_reads}"
-#		break;;
-
- #       * ) echo "Please answer yes or no.";;
-
-  #  esac
-
-#done
 if [[ "${ref_genome}" == "true" ]] && [[ "${paired}" == "true" ]]
 	then
 	echo "Starting reference based analysis on paired-end data."
 	echo " "
-        echo $a_path
-        bash Highway_IBEDs_pipeline.sh ${inputFile1} ${inputFile2} ${barcodeFile} ${a_path} ${renzym} ${truncate_length} ${quality_threshold} ${window_width} ${dist_stacks} ${depth_stack} ${dist_sec_reads} ${ref_genome} ${paired} ${mother} ${father} ${ref_genome_File} 1
+        bash Highway_IBEDs_pipeline.sh ${inputFile1} ${inputFile2} ${barcodeFile} ${popmap} ${a_path} ${renzym} ${truncate_length} ${quality_threshold} ${window_width} ${dist_stacks} ${depth_stack} ${dist_sec_reads} ${ref_genome} ${paired} ${mother} ${father} ${ref_genome_File} 1
 
 fi
 if [[ "${ref_genome}" == "true" ]] && [[ "${paired}" == "false" ]]
 	then 
 	echo "Starting reference based analysis on single-end data."
 	echo " "
-        echo $inputFile
-        echo $ref_genome_File
-        bash Highway_IBEDs_pipeline.sh ${inputFile} ${barcodeFile} ${a_path} ${renzym} ${truncate_length} ${quality_threshold} ${window_width} ${dist_stacks} ${depth_stack} ${dist_sec_reads} ${ref_genome} ${paired} ${mother} ${father} ${ref_genome_File} 2
-
-        #inputFile=$(zenity --file-selection --title="Choose a barcode file")
-        #read -p "Enter your input file: " inputFile
+        bash Highway_IBEDs_pipeline.sh ${inputFile} ${barcodeFile} ${popmap} ${a_path} ${renzym} ${truncate_length} ${quality_threshold} ${window_width} ${dist_stacks} ${depth_stack} ${dist_sec_reads} ${ref_genome} ${paired} ${mother} ${father} ${ref_genome_File} 2
 
 fi
 if [[ "${ref_genome}" == "false" ]] && [[ "${paired}" == "false" ]]
 	then
 	echo "Starting de novo based analysis on single-end data."
 	echo " "
-        #inputFile=$(zenity --file-selection --title="Choose your input file")
-        #read -p "Enter your input file: " inputFile
-	bash Highway_IBEDs_pipeline.sh ${inputFile} ${barcodeFile} ${a_path} ${renzym} ${truncate_length} ${quality_threshold} ${window_width} ${dist_stacks} ${depth_stack} ${dist_sec_reads} ${ref_genome} ${paired} ${mother} ${father} 3
+	bash Highway_IBEDs_pipeline.sh ${inputFile} ${barcodeFile} ${popmap} ${a_path} ${renzym} ${truncate_length} ${quality_threshold} ${window_width} ${dist_stacks} ${depth_stack} ${dist_sec_reads} ${ref_genome} ${paired} ${mother} ${father} 3
 
 fi
 if [[ "${ref_genome}" == "false" ]] && [[ "${paired}" == "true" ]]
         then
         echo "Starting de novo based analysis on paired-end data."
 	echo ""
-        #files=$(zenity --file-selection --multiple)
-        #inputFile1=$(echo ${files} | cut -d"|" -f1)
-        #inputFile2=$(echo ${files} | cut -d"|" -f2)
-	#read -p "Enter both input files: " inputFile1 inputFile2
-      	bash Highway_IBEDs_pipeline.sh ${inputFile1} ${inputFile2} ${barcodeFile} ${a_path} ${renzym} ${truncate_length} ${quality_threshold} ${window_width} ${dist_stacks} ${depth_stack} ${dist_sec_reads} ${ref_genome} ${paired} ${mother} ${father} 4
+      	bash Highway_IBEDs_pipeline.sh ${inputFile1} ${inputFile2} ${barcodeFile} ${popmap} ${a_path} ${renzym} ${truncate_length} ${quality_threshold} ${window_width} ${dist_stacks} ${depth_stack} ${dist_sec_reads} ${ref_genome} ${paired} ${mother} ${father} 4
 
 fi
 
-#if [[ "${porsingle}" == "P" ]] || [[ "${porsingle}" == "p" ]]
-#	then
-#		read -p "Enter both input files: " inputFile1 inputFile2
-#		bash Highway_IBEDs_pipeline.sh ${inputFile1} ${inputFile2} ${barcodeFile} ${a_path}
-#fi
-#if [[ "${porsingle}" == "S" ]] || [[ "${porsingle}" == "s" ]]
-#	then 
-#		read -p "Enter your input file: " inputFile1
-#		bash Highway_IBEDs_pipeline.sh ${inputFile1} ${barcodeFile} ${a_path}
-#fi
-sleep 13
+sleep 5
 trap SIGINT

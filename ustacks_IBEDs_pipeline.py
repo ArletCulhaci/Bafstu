@@ -20,16 +20,17 @@ def getSampleID(gsi_barcode, gsi_path):
     return ls_sampleIDs
 
 def executeCommand(ec_sampleIDs, ec_ab_path, ec_output_dir, ec_porsingle, ec_dist_stacks, ec_depth_stack):
+    os.system("mkdir " + ec_ab_path + "/" + ec_output_dir + "/stacks")
     for x in range(len(ec_sampleIDs)):
 	if ec_porsingle == "true":
-                print(ec_sampleIDs[x])
+                #print(ec_sampleIDs[x])
 		#print(ec_ab_path + "/" + ec_output_dir + "/" + str(ec_sampleIDs[x]) + ".1.fq.gz")
-        	command1 = "ustacks -f " + ec_ab_path + "/"  + ec_output_dir + "/"  + str(ec_sampleIDs[x]) + ".1.fq " + " -o " + ec_ab_path + "/" + ec_output_dir  + " -i " +  str(x) + " -m " + str(ec_depth_stack) + " -M " + str(ec_dist_stacks) + " -H -p 12 2>" + ec_ab_path + "/" + ec_output_dir + "/ustacks_" + str(ec_sampleIDs[x]) + ".log"
-		#print(command1)
+        	command1 = "ustacks -f " + ec_ab_path + "/"  + ec_output_dir + "/samples/"  + str(ec_sampleIDs[x]) + ".1.fq.gz " + " -o " + ec_ab_path + "/" + ec_output_dir  + "/stacks/ -i " +  str(x) + " -m " + str(ec_depth_stack) + " -M " + str(ec_dist_stacks) + " -H -p 12 2>" + ec_ab_path + "/" + ec_output_dir + "/stacks/ustacks_" + str(ec_sampleIDs[x]) + ".log"
+		print(command1)
 		os.system(command1)
 	else:
 		#print(ec_ab_path + "/" + ec_output_dir + "/" + str(ec_sampleIDs[x]) + ".fq.gz")
-        	command1 = "ustacks -f " + ec_ab_path + "/"  + ec_output_dir + "/"  + str(ec_sampleIDs[x]) + ".fq " + " -o " + ec_ab_path + "/" + ec_output_dir  + " -i " +  str(x) + " -m " + str(ec_depth_stack) + " -M " + str(ec_dist_stacks) + " -H -p 12 2>" + ec_ab_path + "/" + ec_output_dir + "/ustacks_" + str(ec_sampleIDs[x]) + ".log"
+        	command1 = "ustacks -f " + ec_ab_path + "/"  + ec_output_dir + "/samples/"  + str(ec_sampleIDs[x]) + ".fq.gz " + " -o " + ec_ab_path + "/" + ec_output_dir  + "/stacks -i " +  str(x) + " -m " + str(ec_depth_stack) + " -M " + str(ec_dist_stacks) + " -H -p 12 2>" + ec_ab_path + "/" + ec_output_dir + "/stacks/ustacks_" + str(ec_sampleIDs[x]) + ".log"
 		os.system(command1)
 
 def main():
