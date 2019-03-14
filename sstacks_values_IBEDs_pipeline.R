@@ -16,6 +16,8 @@ data_raw$V3 <- as.numeric(as.character(data_raw$V3))
 data_raw$V9 <- as.numeric(as.character(data_raw$V9))
 data_raw$V13 <- as.numeric(as.character(data_raw$V13))
 
+data_raw$V20 <- data_raw$V13 + data_raw$V9
+
 a <- ggplot(data_raw, aes(x=data_raw$V1,y=data_raw$V4, fill=data_raw$V4)) + geom_bar(stat="identity") +
   labs(x="Individuals", y="# initial reads") +
   ggtitle("# reads per sample") +
@@ -23,19 +25,13 @@ a <- ggplot(data_raw, aes(x=data_raw$V1,y=data_raw$V4, fill=data_raw$V4)) + geom
   theme(axis.text.x = element_text(angle = 90, hjust = 1, size=10), , axis.text=element_text(size=12))
 a+scale_fill_gradient(low="lightblue", high="darkblue")
 
-library(reshape2)
-
-df1_s <- data.frame(data_raw$V9, data_raw$V13, data_raw$V1)
-df2_s <- melt(df1_s, id.vars='data_raw.V1')
-
-a3 <- ggplot(df2_s, aes(x=data_raw.V1, y=value, fill=variable)) +
-  ylim(0,16000)+
+a3 <- ggplot(data_raw, aes(x=data_raw$V1, y=data_raw$V20, fill=data_raw$V20)) +
   geom_bar(stat='identity', position='dodge')+
   labs(x="Individuals", y="# Verified haplotypes") +
   ggtitle("# Verified Haplotypes") +
   theme_bw()+
   theme(axis.text.x = element_text(angle = 90, hjust = 1, size=10))
-a3 <- a3 + scale_fill_manual(values=c('darkorange2','blue'))
+a3 <- a3 + scale_fill_gradient(low='lightblue',high='darkblue')
 
 pdf(output_path, width=15, height=15)
 plot_grid( a, a3, labels = c("Matching loci", "Verified haplotypes" ),label_size = 20)

@@ -29,24 +29,14 @@ if [ "$#" -eq 11 ]; then
     N=1
 
     # Increment $N as long as a directory with that name exists
-    while [[ -d "${4}/Clean_$DATE-$N" ]] ; do
+    while [[ -d "${4}/STACKS_$DATE-$N" ]] ; do
         N=$(($N+1))
     done
-    echo ${4} "in prep"
-    mkdir "${4}/Clean_$DATE-$N"	
-    process_radtags -1 "${1}" -2 "${2}" -o ${4}/"Clean_$DATE-$N" -b "${3}" -e ${5} -r -t ${6} -q -D -s ${7} -w ${8}  &>/dev/null &
-    PID=$!
-    i=1
-    sp="/-\|"
-    echo -n ' '
-    while [ -d /proc/$PID ]
-        do
-            printf "\b${sp:i++%${#sp}:1}"
-#\b${sp:i++%${#sp}:1}"
-        done
-    echo "Process_RADtags is done"
-    echo process_radtags -1 "${1}" -2 "${2}" -o ${4}/"Clean_$DATE-$N" -b "${3}" -e ${5} -r -t ${6} -q -D -s ${7} -w ${8} > ${4}/"Clean_$DATE-$N"/Command_log.txt
-    cat ${4}/"Clean_$DATE-$N"/process_radtags* | tail -n +12 | awk '{print $2, $3, $6}' | head -${num_ind} | tr ' ' ';' > ${4}/"Clean_$DATE-$N"/Values_run_total_reads_bf_process.txt
+    mkdir "${4}/STACKS_$DATE-$N"
+    mkdir "${4}/STACKS_$DATE-$N/samples"	
+    process_radtags -1 "${1}" -2 "${2}" -o ${4}/"STACKS_$DATE-$N/samples" -b "${3}" -e ${5} -r -t ${6} -q -D -s ${7} -w ${8}  &>/dev/null 
+    echo process_radtags -1 "${1}" -2 "${2}" -o ${4}/"STACKS_$DATE-$N/samples" -b "${3}" -e ${5} -r -t ${6} -q -D -s ${7} -w ${8} > ${4}/"STACKS_$DATE-$N"/Command_log.txt
+    cat ${4}/"STACKS_$DATE-$N/samples"/process_radtags* | tail -n +12 | awk '{print $2, $3, $6}' | head -${num_ind} | tr ' ' ';' > ${4}/"STACKS_$DATE-$N"/Values_run_total_reads_bf_process.txt
 fi
 if [ "$#" -eq 10 ]; then
     num_ind="$(cat ${2} | wc -l)"
@@ -54,26 +44,12 @@ if [ "$#" -eq 10 ]; then
     N=1
 
     # Increment $N as long as a directory with that name exists
-    while [[ -d "${3}/Clean_$DATE-$N" ]] ; do
+    while [[ -d "${3}/STACKS_$DATE-$N" ]] ; do
         N=$(($N+1))
     done
-
-    mkdir "${3}/Clean_$DATE-$N"	
-    process_radtags -f "${1}" -o ${3}/"Clean_$DATE-$N" -b "${2}" -e ${4} -r -t ${5} -q -D  -s ${6} -w ${7} &>/dev/null &
-    PID=$!
-    i=1
-    sp="/-\|"
-    echo -n ' '
-    while [ -d /proc/$PID ]
-        do
-            printf "\b${sp:i++%${#sp}:1}"
-#\b${sp:i++%${#sp}:1}"
-        done
-    echo "Process_RADtags is done"
-    echo  process_radtags -f "${1}" -o ${3}/"Clean_$DATE-$N" -b "${2}" -e ${4} -r -t ${5} -q -D  -s ${6} -w ${7}  > ${3}/"Clean_$DATE-$N"/Command_log.txt
-    cat ${3}/"Clean_$DATE-$N"/process_radtags* | tail -n +12 | awk '{print $2, $3, $6}' | head -${num_ind} | tr ' ' ';' > ${3}/"Clean_$DATE-$N"/Values_run_total_reads_bf_process.txt
-    #Rscript test_r.R Values_run_total_reads_bf_process.txt ${3}/"Clean_$DATE-$N" --save --quiet 2>&1 >/dev/null
-   # echo "A plot containing the initial number of reads before process_radtags can be found in the following directoty ${3}/"Clean_$DATE-$N"" 
+    mkdir "${3}/STACKS_$DATE-$N"	
+    mkdir "${3}/STACKS_$DATE-$N/samples"
+    process_radtags -f "${1}" -o ${3}/"STACKS_$DATE-$N/samples" -b "${2}" -e ${4} -r -t ${5} -q -D  -s ${6} -w ${7}
+    echo  process_radtags -f "${1}" -o ${3}/"STACKS_$DATE-$N" -b "${2}" -e ${4} -r -t ${5} -q -D  -s ${6} -w ${7}  > ${3}/"STACKS_$DATE-$N"/Command_log.txt
+    cat ${3}/"STACKS_$DATE-$N/samples"/process_radtags* | tail -n +12 | awk '{print $2, $3, $6}' | head -${num_ind} | tr ' ' ';' > ${3}/"STACKS_$DATE-$N"/Values_run_total_reads_bf_process.txt
 fi
-
-sleep 2

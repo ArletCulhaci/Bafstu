@@ -26,10 +26,10 @@ sed -n '24p' < sstack_${names}.log | awk '{print $1}' >>total
 sed -n '25p' < sstack_${names}.log | awk '{print $1}'>>total
     tr "\n" ";" <  total > counts.txt
     sed 's/614_/\n614_/g'< counts.txt > counts2.txt
-    sed 's/210_/\n210_/g'< counts2.txt > Final_sstack_Values.txt
+    sed 's/210_/\n210_/g'< counts2.txt > ../Final_sstack_Values.txt
 done < ${2}
-sed -i '1 i\Sample;Catalog loci;Sample loci;Matching loci;no varified haplotypes;ambigous loci;Loci with unaccounted SNPs;Total haplotypes;Verified haplotypes;Gapped alignments;Matched loci;Total haplotypes;Verified haplotypes;Unmatched loci;Ambigous loci;Loci with unaccounted SNPs;No verified haplotyps;Inconsistent alignments' Final_sstack_Values.txt
-sed -i '2d' Final_sstack_Values.txt
+sed -i '1 i\Sample;Catalog loci;Sample loci;Matching loci;no varified haplotypes;ambigous loci;Loci with unaccounted SNPs;Total haplotypes;Verified haplotypes;Gapped alignments;Matched loci;Total haplotypes;Verified haplotypes;Unmatched loci;Ambigous loci;Loci with unaccounted SNPs;No verified haplotyps;Inconsistent alignments' ../Final_sstack_Values.txt
+sed -i '2d' ../Final_sstack_Values.txt
 rm counts.txt
 rm counts2.txt
 rm total
