@@ -25,12 +25,12 @@ def executeCommand(ec_sampleIDs, ec_ab_path, ec_output_dir, ec_porsingle, ec_dis
 	if ec_porsingle == "true":
                 #print(ec_sampleIDs[x])
 		#print(ec_ab_path + "/" + ec_output_dir + "/" + str(ec_sampleIDs[x]) + ".1.fq.gz")
-        	command1 = "ustacks -f " + ec_ab_path + "/"  + ec_output_dir + "/samples/"  + str(ec_sampleIDs[x]) + ".1.fq.gz " + " -o " + ec_ab_path + "/" + ec_output_dir  + "/stacks/ -i " +  str(x) + " -m " + str(ec_depth_stack) + " -M " + str(ec_dist_stacks) + " -H -p 12 2>" + ec_ab_path + "/" + ec_output_dir + "/stacks/ustacks_" + str(ec_sampleIDs[x]) + ".log"
+        	command1 = "ustacks -f " + ec_ab_path + "/"  + ec_output_dir + "/samples/"  + str(ec_sampleIDs[x]) + ".1.fq.gz " + " -o " + ec_ab_path + "/" + ec_output_dir  + "/stacks/ -i " +  str(x) + " -m " + str(ec_depth_stack) + " -M " + str(ec_dist_stacks) + " -d -H --disable-gapped -p 20 2>" + ec_ab_path + "/" + ec_output_dir + "/stacks/ustacks_" + str(ec_sampleIDs[x]) + ".log"
 		print(command1)
 		os.system(command1)
 	else:
 		#print(ec_ab_path + "/" + ec_output_dir + "/" + str(ec_sampleIDs[x]) + ".fq.gz")
-        	command1 = "ustacks -f " + ec_ab_path + "/"  + ec_output_dir + "/samples/"  + str(ec_sampleIDs[x]) + ".fq.gz " + " -o " + ec_ab_path + "/" + ec_output_dir  + "/stacks -i " +  str(x) + " -m " + str(ec_depth_stack) + " -M " + str(ec_dist_stacks) + " -H -p 12 2>" + ec_ab_path + "/" + ec_output_dir + "/stacks/ustacks_" + str(ec_sampleIDs[x]) + ".log"
+        	command1 = "ustacks -f " + ec_ab_path + "/"  + ec_output_dir + "/samples/"  + str(ec_sampleIDs[x]) + ".fq.gz " + " -o " + ec_ab_path + "/" + ec_output_dir  + "/stacks -i " +  str(x) + " -m " + str(ec_depth_stack) + " -M " + str(ec_dist_stacks) + " -d -H --disable-gapped -p 20 2>" + ec_ab_path + "/" + ec_output_dir + "/stacks/ustacks_" + str(ec_sampleIDs[x]) + ".log"
 		os.system(command1)
 
 def main():
