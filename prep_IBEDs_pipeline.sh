@@ -34,8 +34,8 @@ if [ "$#" -eq 11 ]; then
     done
     mkdir "${4}/STACKS_$DATE-$N"
     mkdir "${4}/STACKS_$DATE-$N/samples"	
-    process_radtags -1 "${1}" -2 "${2}" -o ${4}/"STACKS_$DATE-$N/samples" -b "${3}" -e ${5} -r -t ${6} -q -D -s ${7} -w ${8}  &>/dev/null 
-    echo process_radtags -1 "${1}" -2 "${2}" -o ${4}/"STACKS_$DATE-$N/samples" -b "${3}" -e ${5} -r -t ${6} -q -D -s ${7} -w ${8} > ${4}/"STACKS_$DATE-$N"/Command_log.txt
+    process_radtags -1 "${1}" -2 "${2}" -o ${4}/"STACKS_$DATE-$N/samples" -b "${3}" -e ${5} -r -t ${6} -q -D -c -s ${7} -w ${8}  &>/dev/null 
+    echo process_radtags -1 "${1}" -2 "${2}" -o ${4}/"STACKS_$DATE-$N/samples" -b "${3}" -e ${5} -r -t ${6} -q -D -c -s ${7} -w ${8} > ${4}/"STACKS_$DATE-$N"/Command_log.txt
     cat ${4}/"STACKS_$DATE-$N/samples"/process_radtags* | tail -n +12 | awk '{print $2, $3, $6}' | head -${num_ind} | tr ' ' ';' > ${4}/"STACKS_$DATE-$N"/Values_run_total_reads_bf_process.txt
 fi
 if [ "$#" -eq 10 ]; then
@@ -49,7 +49,7 @@ if [ "$#" -eq 10 ]; then
     done
     mkdir "${3}/STACKS_$DATE-$N"	
     mkdir "${3}/STACKS_$DATE-$N/samples"
-    process_radtags -f "${1}" -o ${3}/"STACKS_$DATE-$N/samples" -b "${2}" -e ${4} -r -t ${5} -q -D  -s ${6} -w ${7}
-    echo  process_radtags -f "${1}" -o ${3}/"STACKS_$DATE-$N" -b "${2}" -e ${4} -r -t ${5} -q -D  -s ${6} -w ${7}  > ${3}/"STACKS_$DATE-$N"/Command_log.txt
+    process_radtags -f "${1}" -o ${3}/"STACKS_$DATE-$N/samples" -b "${2}" -e ${4} -r -t ${5} -q -D -c -s ${6} -w ${7}
+    echo  process_radtags -f "${1}" -o ${3}/"STACKS_$DATE-$N" -b "${2}" -e ${4} -r -t ${5} -q -D -c -s ${6} -w ${7}  > ${3}/"STACKS_$DATE-$N"/Command_log.txt
     cat ${3}/"STACKS_$DATE-$N/samples"/process_radtags* | tail -n +12 | awk '{print $2, $3, $6}' | head -${num_ind} | tr ' ' ';' > ${3}/"STACKS_$DATE-$N"/Values_run_total_reads_bf_process.txt
 fi

@@ -62,11 +62,11 @@ if [ "$#" -eq 18 ]; then
     bash count_alignment_values_IBEDs_pipeline.sh ${5}/STACKS_$DATE-$N/alignment ${3}
     Rscript alignment_visualisation.R "alignment.txt" ${5}/"STACKS_$DATE-$N" --quiet 2>&1 >/dev/null
     echo "A plot containing the alignment rate per individual can be found in the following directory ${5}/"STACKS_$DATE-$N""
-    ref_map.pl -T 15 -o ${5}/"STACKS_$DATE-$N/stacks" --popmap ${4} --samples ${5}/"STACKS_$DATE-$N/alignment"  -X "populations: -r 0.30 --vcf --max_obs_het 0.8 --min_maf 0.1" -X "gstacks: --rm-pcr-duplicates" 2> ${5}/"STACKS_$DATE-$N/stacks"/log_ref_map.txt  &>/dev/null & 
+    ref_map.pl -T 20 -o ${5}/"STACKS_$DATE-$N/stacks" --popmap ${4} --samples ${5}/"STACKS_$DATE-$N/alignment"  -X "populations: -r 0.30 --vcf --max_obs_het 0.8 --min_maf 0.1" -X "gstacks: --rm-pcr-duplicates" 2> ${5}/"STACKS_$DATE-$N/stacks"/log_ref_map.txt  &>/dev/null & 
     spinner
     echo "Ref_map is done"
-    echo "ref_map.pl -T 15 -o ${5}/"STACKS_$DATE-$N/stacks" --popmap ${4} --samples ${5}/"STACKS_$DATE-$N/alignment"  -X "populations: -r 0.30 --vcf" -X "gstacks: --rm-pcr-duplicates"" >> ${5}/"STACKS_$DATE-$N"/Command_log.txt
-    Rscript convert_vcf_matrix.R  "populations.haps.vcf" ${5}/"STACKS_$DATE-$N/stacks" --quiet 2>&1 >/dev/null
+    echo "ref_map.pl -T 20 -o ${5}/"STACKS_$DATE-$N/stacks" --popmap ${4} --samples ${5}/"STACKS_$DATE-$N/alignment"  -X "populations: -r 0.30 --vcf --max_obs_het 0.8 --min_maf 0.1" -X "gstacks: --rm-pcr-duplicates"" >> ${5}/"STACKS_$DATE-$N"/Command_log.txt
+    Rscript convert_vcf_matrix.R  "populations.snps.vcf" ${5}/"STACKS_$DATE-$N/stacks" --quiet 2>&1 >/dev/null
     python3.5 matrix_filter.py ${5}/"STACKS_$DATE-$N/stacks" "SNP_matrix.csv" &>/dev/null
 
 fi
@@ -97,9 +97,9 @@ if [ "$#" -eq 17 ]  &&  [ "${17}" -eq 2 ] ; then
         done < ${2}
     bash count_alignment_values_IBEDs_pipeline.sh ${4}/STACKS_$DATE-$N/alignment ${2}
     Rscript alignment_visualisation.R "alignment.txt" ${4}/"STACKS_$DATE-$N" --quiet 2>&1 >/dev/null
-    ref_map.pl -T 15 -o ${4}/"STACKS_$DATE-$N/stacks" --popmap ${3} --samples ${4}/"STACKS_$DATE-$N/alignment"  -X "populations: -r 0.30--vcf" -X "gstacks: --rm-pcr-duplicates"  2> ${4}/"STACKS_$DATE-$N/stacks"/log_ref_map.txt
-   echo "ref_map.pl -T 15 -o ${4}/"STACKS_$DATE-$N/stacks" --popmap ${3} --samples ${4}/"STACKS_$DATE-$N/alignment"  -X "populations: -r 0.30--vcf --max_obs_het 0.8 --min_maf 0.1" -X " gstacks: --rm-pcr-duplicates"">> ${4}/"STACKS_$DATE-$N"/Command_log.txt
-   Rscript convert_vcf_matrix.R  "populations.haps.vcf" ${4}/"STACKS_$DATE-$N/stacks" --quiet 2>&1 >/dev/null
+    ref_map.pl -T 20 -o ${4}/"STACKS_$DATE-$N/stacks" --popmap ${3} --samples ${4}/"STACKS_$DATE-$N/alignment"  -X "populations: -r 0.30 --vcf --max_obs_het 0.8 --min_maf 0.1"  2> ${4}/"STACKS_$DATE-$N/stacks"/log_ref_map.txt
+   echo "ref_map.pl -T 20 -o ${4}/"STACKS_$DATE-$N/stacks" --popmap ${3} --samples ${4}/"STACKS_$DATE-$N/alignment"  -X "populations: -r 0.30--vcf --max_obs_het 0.8 --min_maf 0.1"">> ${4}/"STACKS_$DATE-$N"/Command_log.txt
+   Rscript convert_vcf_matrix.R  "populations.snps.vcf" ${4}/"STACKS_$DATE-$N/stacks" --quiet 2>&1 >/dev/null
    python3.5 matrix_filter.py ${4}/"STACKS_$DATE-$N/stacks" "SNP_matrix.csv" 
 
 fi 
@@ -121,9 +121,9 @@ if [ "$#" -eq 17 ] && [ "${17}" -eq 4 ]; then
     #python ustacks.py "${3}" "${4}" "STACKS_$DATE-$N" "paired" 
     bash count_ustacks_values_IBEDs_pipeline.sh "${5}/STACKS_$DATE-$N/stacks" ${3}
     Rscript ustacks_values_IBEDs_pipeline.R "Final_ustack_Values.txt" ${5}/"STACKS_$DATE-$N" --quiet 2>&1 >/dev/null
-    cstacks -o ${5}/"STACKS_$DATE-$N"/stacks -s ${5}/"STACKS_$DATE-$N"/stacks/${15} -s ${5}/"STACKS_$DATE-$N"/stacks/${16}  -n ${10} -p 15 2>  ${5}/"STACKS_$DATE-$N"/cstacks.log &
+    cstacks -o ${5}/"STACKS_$DATE-$N"/stacks -s ${5}/"STACKS_$DATE-$N"/stacks/${15} -s ${5}/"STACKS_$DATE-$N"/stacks/${16}  -n ${10} --disable_gapped -p 20 2>  ${5}/"STACKS_$DATE-$N"/cstacks.log &
     spinner
-    echo "cstacks -o ${5}/"STACKS_$DATE-$N"/stacks -s ${5}/"STACKS_$DATE-$N"/stacks/${15} -s ${5}/"STACKS_$DATE-$N"/stacks/${16}  -n ${10} -p 15 2>  ${5}/"STACKS_$DATE-$N"/cstacks.log &" >> ${5}/"STACKS_$DATE-$N"/Command_log.txt
+    echo "cstacks -o ${5}/"STACKS_$DATE-$N"/stacks -s ${5}/"STACKS_$DATE-$N"/stacks/${15} -s ${5}/"STACKS_$DATE-$N"/stacks/${16}  -n ${10} --disable_gapped -p 20 2>  ${5}/"STACKS_$DATE-$N"/cstacks.log &" >> ${5}/"STACKS_$DATE-$N"/Command_log.txt
     echo "cstacks is done"
     python sstacks_IBEDs_pipeline.py ${3} ${5} "STACKS_$DATE-$N/stacks" ${14} &
     spinner
@@ -136,15 +136,15 @@ if [ "$#" -eq 17 ] && [ "${17}" -eq 4 ]; then
     echo "tsv2bam -P  ${5}/STACKS_$DATE-$N/stacks  -M  ${4}  -R ${5}/STACKS_$DATE-$N/samples  &> ${5}/STACKS_$DATE-$N/tsv2bam.log  &" >> ${5}/"STACKS_$DATE-$N"/Command_log.txt
     spinner
     echo "tsv2bam is done"
-    gstacks -P  "${5}/STACKS_$DATE-$N/stacks" -M ${4} -t 5 &>/dev/null &
+    gstacks -P  "${5}/STACKS_$DATE-$N/stacks" -M ${4} --rm-pcr-duplicates -t 20 2> ${5}/"STACKS_$DATE-$N"/stacks/gstacks.log &
     spinnir
-    echo "gstacks -P  "${5}/STACKS_$DATE-$N/stacks" -M ${4} -t 5 &>/dev/null &" >> ${5}/"STACKS_$DATE-$N"/Command_log.txt
+    echo "gstacks -P  "${5}/STACKS_$DATE-$N/stacks" -M ${4} --rm-pcr-duplicates -t 20 ${5}/"STACKS_$DATE-$N"/stacks/gstacks.log &" >> ${5}/"STACKS_$DATE-$N"/Command_log.txt
     echo "gstacks is done"
-    populations -P "${5}/STACKS_$DATE-$N/stacks" --popmap ${4} --genepop --vcf -t 5 &>/dev/null &
+    populations -P "${5}/STACKS_$DATE-$N/stacks" --popmap ${4} --genepop --vcf -r 0.3 --max_obs_het 0.8 --min_maf 0.1 -t 20 &>/dev/null &
     spinner
-    echo "populations -P "${5}/STACKS_$DATE-$N/stacks" --popmap ${4} --genepop --vcf -t 5 &>/dev/null &" >> ${5}/"STACKS_$DATE-$N"/Command_log.txt
+    echo "populations -P "${5}/STACKS_$DATE-$N/stacks" --popmap ${4} --genepop --vcf -r 0.3 --max_obs_het 0.8 --min_maf 0.1 -t 20 &>/dev/null &" >> ${5}/"STACKS_$DATE-$N"/Command_log.txt
     echo "Populations is done"
-    Rscript convert_vcf_matrix.R  "populations.haps.vcf" ${5}/"STACKS_$DATE-$N/stacks" --quiet 2>&1 >/dev/null
+    Rscript convert_vcf_matrix.R  "populations.snps.vcf" ${5}/"STACKS_$DATE-$N/stacks" --quiet 2>&1 >/dev/null
     python3.5 matrix_filter.py ${5}/"STACKS_$DATE-$N/stacks" "SNP_matrix.csv" &>/dev/null
 
 fi
@@ -167,9 +167,9 @@ if [ "$#" -eq 16 ]; then
     echo "ustacks is done"
     bash count_ustacks_values_IBEDs_pipeline.sh "${4}/STACKS_$DATE-$N/stacks" ${2}  
     Rscript ustacks_values_IBEDs_pipeline.R "Final_ustack_Values.txt" ${4}/"STACKS_$DATE-$N" --quiet 2>&1 >/dev/null
-    cstacks -o ${4}/"STACKS_$DATE-$N/stacks" -s ${4}/"STACKS_$DATE-$N"/stacks/${14} -s ${4}/"STACKS_$DATE-$N"/stacks/${15}  -n ${9} -p 15 2>  ${4}/"STACKS_$DATE-$N"/cstacks.log &
+    cstacks -o ${4}/"STACKS_$DATE-$N/stacks" -s ${4}/"STACKS_$DATE-$N"/stacks/${14} -s ${4}/"STACKS_$DATE-$N"/stacks/${15}  -n ${9} --disable_gapped -p 20 2>  ${4}/"STACKS_$DATE-$N"/cstacks.log &
     spinner
-    echo " cstacks -o ${4}/"STACKS_$DATE-$N/stacks" -s ${4}/"STACKS_$DATE-$N"/stacks/${14} -s ${4}/"STACKS_$DATE-$N"/stacks/${15}  -n ${9} -p 15 2>  ${4}/"STACKS_$DATE-$N"/cstacks.log" >> ${4}/"STACKS_$DATE-$N"/Command_log.txt
+    echo " cstacks -o ${4}/"STACKS_$DATE-$N/stacks" -s ${4}/"STACKS_$DATE-$N"/stacks/${14} -s ${4}/"STACKS_$DATE-$N"/stacks/${15}  -n ${9} --disable_gapped -p 20 2>  ${4}/"STACKS_$DATE-$N"/cstacks.log" >> ${4}/"STACKS_$DATE-$N"/Command_log.txt
     echo "cstacks is done"
     python sstacks_IBEDs_pipeline.py ${2} ${4} "STACKS_$DATE-$N/stacks" ${13} &>/dev/null &
     spinner
@@ -180,15 +180,15 @@ if [ "$#" -eq 16 ]; then
     spinner
     echo "tsv2bam -P  ${4}/STACKS_$DATE-$N/stacks  -M  ${3}  &> ${4}/STACKS_$DATE-$N/tsv2bam.log" >> ${4}/"STACKS_$DATE-$N"/Command_log.txt
     echo "tsv2bam is done"
-    gstacks -P  "${4}/STACKS_$DATE-$N/stacks" -M ${3} -t 5 &>/dev/null &
+    gstacks -P  "${4}/STACKS_$DATE-$N/stacks" -M ${3} -t 20 2> ${4}/"STACKS_$DATE-$N"/stacks/gstacks.log &
     spinner
-    echo "gstacks -P  "${4}/STACKS_$DATE-$N/stacks" -M ${3} -t 5" >> ${4}/"STACKS_$DATE-$N"/Command_log.txt
+    echo "gstacks -P  "${4}/STACKS_$DATE-$N/stacks" -M ${3} -t 20 2> ${4}/"STACKS_$DATE-$N"/stacks/gstacks.log" >> ${4}/"STACKS_$DATE-$N"/Command_log.txt
     echo "gstacks is done"
-    populations -P "${4}/STACKS_$DATE-$N/stacks" --popmap ${3} --genepop --vcf -t 5 &>/dev/null &
+    populations -P "${4}/STACKS_$DATE-$N/stacks" --popmap ${3} --genepop --vcf -r 0.3 --max_obs_het 0.8 --min_maf 0.1 -t 20 &>/dev/null &
     spinner
-    echo "populations -P "${4}/STACKS_$DATE-$N/stacks" --popmap ${3} --genepop --vcf -t 5" >> ${4}/"STACKS_$DATE-$N"/Command_log.txt
+    echo "populations -P "${4}/STACKS_$DATE-$N/stacks" --popmap ${3} --genepop --vcf -r 0.3 --max_obs_het 0.8 --min_maf 0.1 -t 20" >> ${4}/"STACKS_$DATE-$N"/Command_log.txt
     echo "Populations is done"
-    Rscript convert_vcf_matrix.R  "populations.haps.vcf" ${4}/"STACKS_$DATE-$N/stacks" --quiet 2>&1 >/dev/null
+    Rscript convert_vcf_matrix.R  "populations.snps.vcf" ${4}/"STACKS_$DATE-$N/stacks" --quiet 2>&1 >/dev/null
     python3.5 matrix_filter.py ${4}/"STACKS_$DATE-$N/stacks" "SNP_matrix.csv" &>/dev/null
  
 fi
