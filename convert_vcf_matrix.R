@@ -3,7 +3,6 @@ file <- args[6]
 dir <- args[7]
 library(VariantAnnotation)
 library(snpStats)
-library(GenomeInfoDb)
 file_path <- paste(dir, "/", file, sep="")
 output_path <- paste(dir, "/", "SNP_matrix.csv", sep="")
 #print(output_path)
