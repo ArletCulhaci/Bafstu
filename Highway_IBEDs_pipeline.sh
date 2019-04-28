@@ -66,8 +66,7 @@ if [ "$#" -eq 18 ]; then
     spinner
     echo "Ref_map is done"
     echo "ref_map.pl -T 20 -o ${5}/"STACKS_$DATE-$N/stacks" --popmap ${4} --samples ${5}/"STACKS_$DATE-$N/alignment"  -X "populations: -r 0.30 --vcf --max_obs_het 0.8 --min_maf 0.1" -X "gstacks: --rm-pcr-duplicates"" >> ${5}/"STACKS_$DATE-$N"/Command_log.txt
-    Rscript convert_vcf_matrix.R  "populations.snps.vcf" ${5}/"STACKS_$DATE-$N/stacks" --quiet 2>&1 >/dev/null
-    python3.5 matrix_filter.py ${5}/"STACKS_$DATE-$N/stacks" "SNP_matrix.csv" &>/dev/null
+    #Rscript convert_vcf_matrix.R  "populations.snps.vcf" ${5}/"STACKS_$DATE-$N/stacks" --quiet 2>&1 >/dev/null
 
 fi
 #ref_map.pl -T 15 -o ./ --popmap ../Popmap_17_dec_selection.txt --samples ../bowtie_forward  -X "populations:--vcf" 2> log_ref_map_11_12.txt
@@ -99,8 +98,8 @@ if [ "$#" -eq 17 ]  &&  [ "${17}" -eq 2 ] ; then
     Rscript alignment_visualisation.R "alignment.txt" ${4}/"STACKS_$DATE-$N" --quiet 2>&1 >/dev/null
     ref_map.pl -T 20 -o ${4}/"STACKS_$DATE-$N/stacks" --popmap ${3} --samples ${4}/"STACKS_$DATE-$N/alignment"  -X "populations: -r 0.30 --vcf --max_obs_het 0.8 --min_maf 0.1"  2> ${4}/"STACKS_$DATE-$N/stacks"/log_ref_map.txt
    echo "ref_map.pl -T 20 -o ${4}/"STACKS_$DATE-$N/stacks" --popmap ${3} --samples ${4}/"STACKS_$DATE-$N/alignment"  -X "populations: -r 0.30--vcf --max_obs_het 0.8 --min_maf 0.1"">> ${4}/"STACKS_$DATE-$N"/Command_log.txt
-   Rscript convert_vcf_matrix.R  "populations.snps.vcf" ${4}/"STACKS_$DATE-$N/stacks" --quiet 2>&1 >/dev/null
-   python3.5 matrix_filter.py ${4}/"STACKS_$DATE-$N/stacks" "SNP_matrix.csv" 
+   #Rscript convert_vcf_matrix.R  "populations.snps.vcf" ${4}/"STACKS_$DATE-$N/stacks" --quiet 2>&1 >/dev/null
+
 
 fi 
 
@@ -144,8 +143,8 @@ if [ "$#" -eq 17 ] && [ "${17}" -eq 4 ]; then
     spinner
     echo "populations -P "${5}/STACKS_$DATE-$N/stacks" --popmap ${4} --genepop --vcf -r 0.3 --max_obs_het 0.8 --min_maf 0.1 -t 20 &>/dev/null &" >> ${5}/"STACKS_$DATE-$N"/Command_log.txt
     echo "Populations is done"
-    Rscript convert_vcf_matrix.R  "populations.snps.vcf" ${5}/"STACKS_$DATE-$N/stacks" --quiet 2>&1 >/dev/null
-    python3.5 matrix_filter.py ${5}/"STACKS_$DATE-$N/stacks" "SNP_matrix.csv" &>/dev/null
+    #Rscript convert_vcf_matrix.R  "populations.snps.vcf" ${5}/"STACKS_$DATE-$N/stacks" --quiet 2>&1 >/dev/null
+    
 
 fi
 #If 12=false, single end data
@@ -188,8 +187,8 @@ if [ "$#" -eq 16 ]; then
     spinner
     echo "populations -P "${4}/STACKS_$DATE-$N/stacks" --popmap ${3} --genepop --vcf -r 0.3 --max_obs_het 0.8 --min_maf 0.1 -t 20" >> ${4}/"STACKS_$DATE-$N"/Command_log.txt
     echo "Populations is done"
-    Rscript convert_vcf_matrix.R  "populations.snps.vcf" ${4}/"STACKS_$DATE-$N/stacks" --quiet 2>&1 >/dev/null
-    python3.5 matrix_filter.py ${4}/"STACKS_$DATE-$N/stacks" "SNP_matrix.csv" &>/dev/null
+    #Rscript convert_vcf_matrix.R  "populations.snps.vcf" ${4}/"STACKS_$DATE-$N/stacks" --quiet 2>&1 >/dev/null
+
  
 fi
 
