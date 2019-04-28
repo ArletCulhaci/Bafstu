@@ -1,5 +1,4 @@
 #!/bin/bash
-cd /home/biolinux/Documents/Arlet_files/git-repos/Bafstu
 sleep 2
 trap '
 while true; do
