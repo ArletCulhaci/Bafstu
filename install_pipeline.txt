@@ -12,9 +12,7 @@
 --> source activate stacks_2.3d
 --> conda install stacks
 --> conda install -c r r 
---> conda install -c conda-forge r-qtl
 --> conda install -c r r-ggplot2
---> conda install -c conda-forge r-cowplot
 --> conda install -c r r-reshape2 
 --> conda install -c r r-plyr
 --> conda install -c bioconda bioconductor-variantanotation
