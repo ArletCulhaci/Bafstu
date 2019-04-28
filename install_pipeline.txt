@@ -1,0 +1,27 @@
+--> sudo apt-get install vim
+--> sudo apt-get install git
+--> apt-get install tree
+--> apt-get install r-base-core
+--> git clone https://github.com/Mtusti05/Bafstu.git
+--> sudo apt-get install python3-tk 
+--> wget https://repo.anaconda.com/archive/Anaconda3-5.3.1-Linux-x86_64.sh
+--> bash bash Anaconda3-5.3.1-Linux-x86_64.sh
+--> nano /home/mtusti/.bashrc
+--> insert conda=/home/mtusti/anaconda3/etc/profile.d/conda.sh
+--> conda create --override-channels --channel iuc --channel conda-forge --channel bioconda --channel defaults --name stacks_2.3d stacks=2.3d
+--> source activate stacks_2.3d
+--> conda install stacks
+--> conda install -c r r 
+--> conda install -c conda-forge r-qtl
+--> conda install -c r r-ggplot2
+--> conda install -c conda-forge r-cowplot
+--> conda install -c r r-reshape2 
+--> conda install -c r r-plyr
+--> conda install -c bioconda bioconductor-variantanotation
+--> conda install -c bioconda/label/cf201901 bioconductor-snprelate
+--> conda install -c bioconda/label/cf201901 bioconductor-iranges
+--> conda install -c bioconda/label/cf201901 bioconductor-genomicranges
+-> conda install -c bioconda/label/cf201901 bioconductor-xvector 
+--> conda install -c bioconda/label/cf201901 bioconductor-summarizedexperiment
+--> conda install -c bioconda/label/cf201901 bioconductor-biostrings 
+
