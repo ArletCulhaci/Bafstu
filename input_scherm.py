@@ -258,7 +258,7 @@ class Window(Frame):
         R3.place(x=0, y=150)
         R4.place(x=150, y=150)
         #quitButton.place(x=660, y=670)
-        SubmitButton.place(x=320, y=700)
+        SubmitButton.place(x=20, y=500)
         button2.place(x = 0, y=300)
         labl_outdir.place(x = 0, y = 250)
         labl_barcodes.place(x  = 150, y = 250)
