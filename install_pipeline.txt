@@ -13,8 +13,6 @@
 --> conda install stacks
 --> conda install -c r r 
 --> conda install -c r r-ggplot2
---> conda install -c r r-reshape2 
---> conda install -c r r-plyr
 --> conda install -c bioconda bioconductor-variantanotation
 --> conda install -c bioconda/label/cf201901 bioconductor-snprelate
 --> conda install -c bioconda/label/cf201901 bioconductor-iranges
