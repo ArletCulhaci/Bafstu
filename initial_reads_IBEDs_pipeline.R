@@ -17,7 +17,7 @@ a <- ggplot(data_raw, aes(x=data_raw$Filename,y=data_raw$Total, fill=data_raw$To
   labs(x="Individuals", y="# initial reads") +
   ggtitle("# reads per sample") +
   theme_bw()+
-  theme(axis.text.x = element_text(angle = 90, hjust = 1, size=10), , axis.text=element_text(size=12))
+  theme(axis.text.x = element_text(angle = 90, hjust = 1, size=10), axis.text=element_text(size=12))
 a+scale_fill_gradient(low="lightblue", high="darkblue")
 pdf(output_path, width=15, height=15)
 plot(a)
