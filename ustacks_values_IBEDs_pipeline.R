@@ -34,7 +34,7 @@ c <- ggplot(data_raw, aes(x=data_raw$V1,y=data_raw$V10, fill=data_raw$V10)) + ge
   labs(x="Individuals", y=" mean depth") +
   ggtitle("# Depth per sample") +
   theme_bw()+
-  theme(axis.text.x = element_text(angle = 90, hjust = 1, size=10), , axis.text=element_text(size=12))
+  theme(axis.text.x = element_text(angle = 90, hjust = 1, size=10), axis.text=element_text(size=12))
 c+scale_fill_gradient(low="lightblue", high="darkblue")
 
 pdf(output_path1, width=15, height=15)
