@@ -17,7 +17,7 @@ a <- ggplot(data_raw, aes(x=data_raw$Sample,y=data_raw$rate, fill=data_raw$rate)
   labs(x="Individuals", y="Percentage of alignment") +
   ggtitle("# Alignment rate per sample") +
   theme_bw()+
-  theme(axis.text.x = element_text(angle = 90, hjust = 1, size=10), , axis.text=element_text(size=12))
+  theme(axis.text.x = element_text(angle = 90, hjust = 1, size=10), axis.text=element_text(size=12))
 a+scale_fill_gradient(low="lightblue", high="darkblue")
 pdf(output_path, width=15, height=15)
 plot(a)
