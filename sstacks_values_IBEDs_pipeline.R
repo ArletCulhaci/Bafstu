@@ -21,7 +21,7 @@ a <- ggplot(data_raw, aes(x=data_raw$V1,y=data_raw$V4, fill=data_raw$V4)) + geom
   labs(x="Individuals", y="# initial reads") +
   ggtitle("# reads per sample") +
   theme_bw()+
-  theme(axis.text.x = element_text(angle = 90, hjust = 1, size=10), , axis.text=element_text(size=12))
+  theme(axis.text.x = element_text(angle = 90, hjust = 1, size=10), axis.text=element_text(size=12))
 a+scale_fill_gradient(low="lightblue", high="darkblue")
 
 a3 <- ggplot(data_raw, aes(x=data_raw$V1, y=data_raw$V20, fill=data_raw$V20)) +
